@@ -24,7 +24,7 @@ function toPlatformName(slug) {
 
 function toAvatarInitials(displayName) {
   if (!displayName) return '??';
-  const words = displayName.replace(/[^a-zA-Z ]/g, '').trim().split(/s+/);
+  const words = displayName.replace(/[^a-zA-Z ]/g, '').trim().split(/\s+/);
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
   return (words[0][0] + words[1][0]).toUpperCase();
 }
