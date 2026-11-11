@@ -8,58 +8,55 @@
  *   GET  /api/analyses/:id             → get one analysis by ID
  */
 
-const prisma      = require('../lib/prisma');
+const db = require('../lib/prisma');
 const { scoreProfile } = require('../services/riskEngine');
+const { toInvestigationShape } = require('../utils/formatters');
 
 /**
  * POST /api/profiles/:id/analyze
- * Loads the profile, runs the risk engine, persists the analysis, and returns
- * a response object shaped to match what the frontend inspector panel needs.
+ * Runs the risk engine, persists the result, and returns both the raw analysis
+ * and the investigation shape the frontend inspector/table expects directly.
  */
 async function analyze(req, res, next) {
   try {
     const { id } = req.params;
 
-    // 1. Load the profile
-    const profile = await prisma.profile.findUnique({ where: { id } });
-    if (!profile) {
-      return res.status(404).json({ error: 'Profile not found' });
-    }
+    // 1. Load profile
+    const profile = await db.profile.findUnique({ where: { id } });
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
 
-    // 2. Run risk engine (pure function — no DB)
+    // 2. Score (pure function)
     const assessment = scoreProfile(profile);
 
-    // 3. Persist the analysis (immutable snapshot)
-    const analysis = await prisma.analysis.create({
+    // 3. Persist
+    const analysis = await db.analysis.create({
       data: {
         profileId:      profile.id,
         score:          assessment.score,
         riskLevel:      assessment.riskLevel,
         threatCategory: assessment.threatCategory,
-        indicators:     assessment.indicators,  // stored as JSON
-        breakdown:      assessment.breakdown,   // stored as JSON
+        indicators:     assessment.indicators,
+        breakdown:      assessment.breakdown,
       },
     });
 
-    // 4. Build the response — shaped for the frontend inspector panel
-    const response = {
+    // 4. Build response — raw analysis + frontend-ready investigation shape
+    return res.status(201).json({
       analysis: {
         id:             analysis.id,
         profileId:      analysis.profileId,
         score:          analysis.score,
-        riskLevel:      analysis.riskLevel,         // e.g. "CRITICAL"
-        riskLevelCss:   analysis.riskLevel.toLowerCase(), // e.g. "critical" (for CSS class)
+        riskLevel:      analysis.riskLevel,
+        riskLevelCss:   analysis.riskLevel.toLowerCase(),
         threatCategory: analysis.threatCategory,
         indicators:     assessment.indicators,
         breakdown:      assessment.breakdown,
-        // Convenience fields that map directly to inspector DOM elements
-        // (Member 2 can read these instead of re-deriving from indicators)
         displaySignals: assessment.indicators.map(i => i.description),
         createdAt:      analysis.createdAt,
       },
-    };
-
-    return res.status(201).json(response);
+      // Ready-to-use investigation object for dashboard.js renderInvestigationsTable()
+      investigation: toInvestigationShape(profile, analysis),
+    });
   } catch (err) {
     next(err);
   }
@@ -73,22 +70,13 @@ async function listForProfile(req, res, next) {
   try {
     const { id } = req.params;
 
-    // Check the profile exists
-    const profile = await prisma.profile.findUnique({ where: { id } });
-    if (!profile) {
-      return res.status(404).json({ error: 'Profile not found' });
-    }
+    const profile = await db.profile.findUnique({ where: { id } });
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
 
-    const analyses = await prisma.analysis.findMany({
+    const analyses = await db.analysis.findMany({
       where:   { profileId: id },
       orderBy: { createdAt: 'desc' },
-      select: {
-        id:             true,
-        score:          true,
-        riskLevel:      true,
-        threatCategory: true,
-        createdAt:      true,
-      },
+      select:  { id: true, score: true, riskLevel: true, threatCategory: true, createdAt: true },
     });
 
     return res.json({ analyses });
@@ -103,13 +91,8 @@ async function listForProfile(req, res, next) {
  */
 async function getOne(req, res, next) {
   try {
-    const analysis = await prisma.analysis.findUnique({
-      where: { id: req.params.id },
-    });
-
-    if (!analysis) {
-      return res.status(404).json({ error: 'Analysis not found' });
-    }
+    const analysis = await db.analysis.findUnique({ where: { id: req.params.id } });
+    if (!analysis) return res.status(404).json({ error: 'Analysis not found' });
 
     return res.json({
       analysis: {
@@ -124,4 +107,3 @@ async function getOne(req, res, next) {
 }
 
 module.exports = { analyze, listForProfile, getOne };
-
