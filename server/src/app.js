@@ -14,6 +14,7 @@ const healthRouter   = require('./routes/health');
 const profileRouter  = require('./routes/profiles');
 const analysisRouter = require('./routes/analyses');
 const statsRouter    = require('./routes/stats');
+const scanRouter     = require('./routes/scan');
 const errorHandler   = require('./middleware/errorHandler');
 
 const app = express();
@@ -51,6 +52,7 @@ app.use('/health',       healthRouter);
 app.use('/api/profiles', profileRouter);
 app.use('/api/analyses', analysisRouter);
 app.use('/api/stats',    statsRouter);
+app.use('/api/scan',     scanRouter);
 
 // 404 fallback
 app.use((req, res) => {
