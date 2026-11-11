@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPDS — Fake Profile Detection & Reporting System | SOC Dashboard</title>
+  
+  <!-- Modern Typography Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         FIXED DARK SIDEBAR (Requirement #5)
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Logo & Brand Header -->
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-wrapper">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="brand-info">
+            <div class="brand-title-row">
+              <span class="brand-name">FPDS</span>
+              <span class="brand-tag">SOC</span>
+            </div>
+            <span class="brand-subtitle">Fake Profile Detection System</span>
+          </div>
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Navigation Sidebar">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <!-- Main Navigation Menu -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Investigation Modules</div>
+
+        <a href="dashboard.html" class="nav-item active" id="nav-dashboard">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="#new-investigation" class="nav-item" id="nav-new-investigation" data-action="new-investigation">
+          <span class="nav-icon"><i data-lucide="crosshair"></i></span>
+          <span class="nav-label">New Investigation</span>
+          <span class="nav-badge">SCAN</span>
+        </a>
+
+        <a href="#profile-analysis" class="nav-item" id="nav-profile-analysis">
+          <span class="nav-icon"><i data-lucide="scan-face"></i></span>
+          <span class="nav-label">Profile Analysis</span>
+        </a>
+
+        <a href="#history" class="nav-item" id="nav-history">
+          <span class="nav-icon"><i data-lucide="history"></i></span>
+          <span class="nav-label">Investigation History</span>
+        </a>
+
+        <a href="#reports" class="nav-item" id="nav-reports" data-action="reports">
+          <span class="nav-icon"><i data-lucide="file-text"></i></span>
+          <span class="nav-label">Reports</span>
+        </a>
+
+        <a href="#methodology" class="nav-item" id="nav-methodology" data-action="methodology">
+          <span class="nav-icon"><i data-lucide="binary"></i></span>
+          <span class="nav-label">Methodology</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Status Footer (Requirement #5) -->
+      <div class="sidebar-footer">
+        <div class="system-status-card">
+          <div class="status-indicator-group">
+            <div class="status-beacon"></div>
+            <div class="status-text-details">
+              <span class="status-title">SYSTEM ONLINE</span>
+              <span class="status-meta">Forensics Core v2.4</span>
+            </div>
+          </div>
+          <span class="status-ping" id="systemPingBadge">24ms</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN APPLICATION SHELL
+         ==================================================================== -->
+    <div class="main-wrapper">
+      
+      <!-- Top Application Header Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle Navigation Drawer">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <div class="breadcrumbs">
+            <a href="index.html" class="breadcrumb-root">FPDS Portal</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-active">
+              <i data-lucide="radar" style="width: 14px; height: 14px; color: var(--primary-blue);"></i>
+              Threat Intelligence Command Center
+            </span>
+          </div>
+        </div>
+
+        <div class="topbar-search-container">
+          <span class="search-icon-left">
+            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+          </span>
+          <input 
+            type="text" 
+            class="topbar-search-input" 
+            id="topSearchInput" 
+            placeholder="Search suspect handle, hashtag, or investigation ID..." 
+            autocomplete="off"
+          />
+          <span class="search-shortcut-badge">/</span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-actions">
+            <button class="icon-button" id="notificationBtn" title="Security Telemetry Alerts">
+              <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
+              <span class="unread-dot"></span>
+            </button>
+          </div>
+
+          <div class="user-badge-profile">
+            <div class="user-avatar-initials">SE</div>
+            <div class="user-details">
+              <span class="user-name">Forensic Analyst</span>
+              <span class="user-role">CLEARANCE LVL 3</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Content Area -->
+      <main class="content-body">
+        
+        <!-- Page Title & Quick Actions Row -->
+        <section class="page-header">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">
+                <span>Threat Intelligence & Social Forensics</span>
+              </h1>
+              <p class="page-description">
+                Automated multi-platform fake persona classification, botnet clustering, and impersonation detection.
+              </p>
+            </div>
+            
+            <div style="display: flex; gap: 0.75rem;">
+              <button class="btn btn-secondary" id="methodologyHeaderBtn" onclick="window.FPDS_NAV.handleMethodologyTrigger()">
+                <i data-lucide="binary" style="width: 16px; height: 16px;"></i>
+                <span>ASD Methodology</span>
+              </button>
+              <button class="btn btn-primary" onclick="window.FPDS_NAV.handleNewInvestigationTrigger()">
+                <i data-lucide="crosshair" style="width: 16px; height: 16px;"></i>
+                <span>New Investigation</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- KPI / System Stat Cards Grid -->
+        <section class="stat-card-grid">
+          
+          <div class="stat-card blue">
+            <div class="stat-header">
+              <span class="stat-label">Total Profiles Scanned</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="users" style="width: 18px; height: 18px;"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="statTotalScanned">14,892</div>
+            <div class="stat-trend">
+              <span class="trend-badge positive">
+                <i data-lucide="activity" style="width: 12px; height: 12px;"></i> +18.4%
+              </span>
+              <span>vs previous 7 days</span>
+            </div>
+          </div>
+
+          <div class="stat-card red">
+            <div class="stat-header">
+              <span class="stat-label">High-Risk Profiles</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="alert-octagon" style="width: 18px; height: 18px;"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="statHighRisk">1,429</div>
+            <div class="stat-trend">
+              <span class="trend-badge negative">
+                <i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i> +12.1%
+              </span>
+              <span>flagged as synthetic</span>
+            </div>
+          </div>
+
+          <div class="stat-card orange">
+            <div class="stat-header">
+              <span class="stat-label">Bot Syndicates Identified</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="statBotClusters">84</div>
+            <div class="stat-trend">
+              <span class="trend-badge neutral">
+                <i data-lucide="radar" style="width: 12px; height: 12px;"></i> 5 Active
+              </span>
+              <span>coordinated clusters</span>
+            </div>
+          </div>
+
+          <div class="stat-card green">
+            <div class="stat-header">
+              <span class="stat-label">Model Confidence</span>
+              <div class="stat-icon-wrapper">
+                <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+              </div>
+            </div>
+            <div class="stat-value" id="statConfidence">98.4%</div>
+            <div class="stat-trend">
+              <span class="trend-badge positive">
+                <i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> ±0.3%
+              </span>
+              <span>Bayesian validation</span>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Quick Scan Console (New Investigation Entry) -->
+        <section class="investigation-scanner-card" id="new-investigation">
+          <div class="scanner-header">
+            <div class="card-title-group">
+              <div class="card-title-indicator"></div>
+              <div>
+                <h2 class="card-title">Real-Time Forensic Scan Console</h2>
+                <p class="card-subtitle">Initiate instant multi-vector forensic evaluation on social target</p>
+              </div>
+            </div>
+            <div class="scanner-badge">
+              <i data-lucide="activity" style="width: 14px; height: 14px;"></i>
+              <span>Live Pipeline</span>
+            </div>
+          </div>
+
+          <form id="quickScanForm">
+            <div class="scanner-input-group">
+              
+              <select class="platform-select" id="platformSelect" aria-label="Social Media Platform">
+                <option value="twitter">Twitter / X</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="facebook">Facebook</option>
+                <option value="tiktok">TikTok</option>
+              </select>
+
+              <div class="scanner-input-wrapper">
+                <span class="scanner-input-icon">
+                  <i data-lucide="crosshair" style="width: 18px; height: 18px;"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="scanner-input" 
+                  id="quickScanInput" 
+                  placeholder="Enter username (e.g. @crypto_bot44) or target profile URL..." 
+                  required
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary scanner-action-btn" id="scanSubmitBtn">
+                <i data-lucide="radar" style="width: 16px; height: 16px;"></i>
+                <span>Run Forensic Scan</span>
+              </button>
+
+            </div>
+
+            <div class="scanner-options-row">
+              <span class="scanner-option-label">Analysis Pipeline Vectors:</span>
+              <div class="scanner-checkbox-group">
+                <label class="cyber-checkbox-label">
+                  <input type="checkbox" checked disabled>
+                  <span>GAN Artifact Detection</span>
+                </label>
+                <label class="cyber-checkbox-label">
+                  <input type="checkbox" checked disabled>
+                  <span>Temporal Interval Poisson Map</span>
+                </label>
+                <label class="cyber-checkbox-label">
+                  <input type="checkbox" checked disabled>
+                  <span>Ego-Network Topology</span>
+                </label>
+                <label class="cyber-checkbox-label">
+                  <input type="checkbox" checked disabled>
+                  <span>NLP Scripting Fingerprint</span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- Main Dashboard Split Grid -->
+        <div class="dashboard-grid">
+          
+          <!-- Left Column: Investigations Table & Filters (Requirement: Investigation History) -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <div class="cyber-card investigations-card" id="history">
+              <div class="cyber-card-header">
+                <div class="card-title-group">
+                  <div class="card-title-indicator"></div>
+                  <div>
+                    <h3 class="card-title">Investigation Records & Forensics Queue</h3>
+                    <p class="card-subtitle">Select any investigated target to inspect detailed threat telemetry</p>
+                  </div>
+                </div>
+
+                <div class="table-search-box">
+                  <span class="table-search-icon">
+                    <i data-lucide="search" style="width: 14px; height: 14px;"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    class="table-search-input" 
+                    id="tableSearchInput" 
+                    placeholder="Filter records..." 
+                  />
+                </div>
+              </div>
+
+              <div class="investigations-toolbar">
+                <div class="filter-tabs">
+                  <button class="filter-tab active" data-filter="all">All Targets</button>
+                  <button class="filter-tab" data-filter="critical-high">Critical & High Risk</button>
+                  <button class="filter-tab" data-filter="medium">Suspicious (Medium)</button>
+                  <button class="filter-tab" data-filter="cleared">Cleared / Clean</button>
+                </div>
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
+                  Showing 6 Live Telemetry Records
+                </span>
+              </div>
+
+              <div class="table-responsive">
+                <table class="cyber-table">
+                  <thead>
+                    <tr>
+                      <th>Case ID</th>
+                      <th>Profile Subject</th>
+                      <th>Platform</th>
+                      <th>Threat Index</th>
+                      <th>Classification</th>
+                      <th>Detected</th>
+                      <th style="text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="investigationsTableBody">
+                    <!-- Dynamic Rows Populated via dashboard.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Threat Telemetry Activity Feed -->
+            <div class="cyber-card">
+              <div class="cyber-card-header">
+                <div class="card-title-group">
+                  <div class="card-title-indicator" style="background-color: var(--color-orange);"></div>
+                  <div>
+                    <h3 class="card-title">Real-Time Threat Telemetry Stream</h3>
+                    <p class="card-subtitle">Continuous background event feed from monitored subnets</p>
+                  </div>
+                </div>
+                <span class="risk-badge medium">
+                  <span class="risk-badge-dot"></span> STREAM LIVE
+                </span>
+              </div>
+              <div class="cyber-card-body">
+                <div class="threat-feed-list" id="threatFeedContainer">
+                  <!-- Populated via dashboard.js -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Profile Analysis Inspector (Requirement: Profile Analysis) -->
+          <aside class="cyber-card inspector-card" id="profile-analysis">
+            <div class="cyber-card-header">
+              <div class="card-title-group">
+                <div class="card-title-indicator" style="background-color: var(--color-red);"></div>
+                <div>
+                  <h3 class="card-title">Forensic Profile Inspector</h3>
+                  <p class="card-subtitle">Target Deep-Dive Analysis</p>
+                </div>
+              </div>
+              <span class="risk-badge critical" id="inspectorScoreBadge">CRITICAL FAKE</span>
+            </div>
+
+            <div class="cyber-card-body">
+              
+              <!-- Target Identity Card -->
+              <div class="inspector-header-details">
+                <div class="inspector-target-info">
+                  <div class="inspector-avatar" id="inspectorAvatar">CA</div>
+                  <div class="inspector-names">
+                    <span class="inspector-display-name" id="inspectorDisplayName">Crypto Alpha Signals 🚀</span>
+                    <span class="inspector-handle" id="inspectorHandle">@crypto_alpha_bot89</span>
+                  </div>
+                </div>
+                <span class="platform-tag" id="inspectorPlatform">Twitter / X</span>
+              </div>
+
+              <!-- Threat Meter Box -->
+              <div class="threat-meter-card">
+                <div class="threat-meter-left">
+                  <span class="threat-meter-title">Threat Score Index</span>
+                  <div class="threat-score-large critical" id="inspectorScoreNum">94</div>
+                </div>
+                <div class="threat-meter-verdict">
+                  <span style="font-size: 0.6875rem; color: var(--text-muted); font-family: var(--font-mono);">
+                    CONFIDENCE: 99.2%
+                  </span>
+                  <div class="progress-bar-container" style="width: 140px;">
+                    <div class="progress-fill critical" id="inspectorScoreProgress" style="width: 94%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Metadata Quick Stats -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <div style="font-size: 0.6875rem; color: var(--text-muted);">Account Age</div>
+                  <div style="font-size: 0.875rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-main);" id="inspectorAccountAge">14 days</div>
+                </div>
+                <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <div style="font-size: 0.6875rem; color: var(--text-muted);">Followers / Following</div>
+                  <div style="font-size: 0.875rem; font-weight: 700; font-family: var(--font-mono); color: var(--color-red);" id="inspectorFollowers">128 / 4,892</div>
+                </div>
+              </div>
+
+              <!-- Multi-Vector Factor Breakdown -->
+              <div class="breakdown-section">
+                <div class="breakdown-title">
+                  <span>Forensic Vector Breakdown</span>
+                  <span style="font-size: 0.6875rem; font-family: var(--font-mono); color: var(--primary-blue);">ASD-WEIGHTS</span>
+                </div>
+
+                <div class="factor-item">
+                  <div class="factor-label-row">
+                    <span class="factor-name">Metadata & Bio Anomaly</span>
+                    <span class="factor-value" id="factorMetadataValue">96%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-fill critical" id="factorMetadataBar" style="width: 96%;"></div>
+                  </div>
+                </div>
+
+                <div class="factor-item">
+                  <div class="factor-label-row">
+                    <span class="factor-name">Temporal Burst Frequency</span>
+                    <span class="factor-value" id="factorBurstValue">92%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-fill critical" id="factorBurstBar" style="width: 92%;"></div>
+                  </div>
+                </div>
+
+                <div class="factor-item">
+                  <div class="factor-label-row">
+                    <span class="factor-name">Network Ring Cluster Density</span>
+                    <span class="factor-value" id="factorNetworkValue">94%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-fill critical" id="factorNetworkBar" style="width: 94%;"></div>
+                  </div>
+                </div>
+
+                <div class="factor-item">
+                  <div class="factor-label-row">
+                    <span class="factor-name">NLP Scripting & Lexical Entropy</span>
+                    <span class="factor-value" id="factorScriptingValue">89%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-fill critical" id="factorScriptingBar" style="width: 89%;"></div>
+                  </div>
+                </div>
+
+                <div class="factor-item">
+                  <div class="factor-label-row">
+                    <span class="factor-name">Avatar Authenticity (StyleGAN check)</span>
+                    <span class="factor-value" id="factorAvatarValue">12%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-fill critical" id="factorAvatarBar" style="width: 12%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detected Signals -->
+              <div class="signals-section">
+                <div class="breakdown-title">
+                  <span>Forensic Anomaly Markers</span>
+                </div>
+                <ul class="signals-list" id="inspectorSignalsList">
+                  <!-- Populated via dashboard.js -->
+                </ul>
+              </div>
+
+              <!-- Inspector Actions -->
+              <div class="inspector-actions">
+                <button class="btn btn-secondary" id="exportDossierBtn" style="flex: 1;">
+                  <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+                  <span>Export Dossier</span>
+                </button>
+                <button class="btn btn-danger" id="flagNetworkBtn" style="flex: 1;">
+                  <i data-lucide="alert-octagon" style="width: 14px; height: 14px;"></i>
+                  <span>Flag Ring</span>
+                </button>
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODALS: NEW INVESTIGATION, METHODOLOGY, REPORTS
+       ==================================================================== -->
+
+  <!-- Modal: New Investigation -->
+  <div class="modal-overlay" id="newInvestigationModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="crosshair" style="width: 20px; height: 20px; color: var(--primary-blue);"></i>
+          <span>New Profile Investigation Setup</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Configure a dedicated forensic probe against a suspected account or cluster across target social networks.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">Target Network Platform</label>
+          <select class="form-select" id="modalPlatformSelect">
+            <option value="twitter">Twitter / X Intelligence Probe</option>
+            <option value="instagram">Instagram Graph Crawler</option>
+            <option value="linkedin">LinkedIn Professional Impersonation Guard</option>
+            <option value="facebook">Facebook Group Disinformation Monitor</option>
+            <option value="tiktok">TikTok Synthetic Content Scanner</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Account Handle or Profile URL</label>
+          <div class="input-container">
+            <span class="input-icon-slot">
+              <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+            </span>
+            <input type="text" class="form-input input-with-icon" id="modalTargetInput" placeholder="e.g. @botnet_alpha_test or https://..." />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Investigation Tag / Note (Optional)</label>
+          <input type="text" class="form-input" placeholder="e.g. ASD University Capstone Case #402" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" onclick="
+          const val = document.getElementById('modalTargetInput').value;
+          if (val) {
+            document.getElementById('quickScanInput').value = val;
+            document.getElementById('scanSubmitBtn').click();
+            document.getElementById('newInvestigationModal').classList.remove('active');
+          } else {
+            window.FPDS_APP.showToast('Input Required', 'Please enter a target username.', 'alert');
+          }
+        ">
+          <i data-lucide="radar" style="width: 16px; height: 16px;"></i>
+          <span>Launch Probe</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Methodology (Requirement: Methodology) -->
+  <div class="modal-overlay" id="methodologyModal">
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="binary" style="width: 20px; height: 20px; color: var(--primary-blue);"></i>
+          <span>ASD Forensic Detection Methodology</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          The Fake Profile Detection System (FPDS) operates on a five-tier multi-modal evaluation pipeline designed to separate authentic human behavioral profiles from synthetic avatars, bot farms, and coordinated astroturfing campaigns.
+        </p>
+
+        <div class="methodology-grid" id="methodologyContainer">
+          <!-- Populated from mock-data.js -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reports (Requirement: Reports) -->
+  <div class="modal-overlay" id="reportsModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="file-text" style="width: 20px; height: 20px; color: var(--primary-blue);"></i>
+          <span>Forensic Investigation Reports Dossier</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Academic verification dossiers compiled for audit review and forensic assessment.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-card); padding: 0.85rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.84rem; color: var(--text-main);">Dossier #FPDS-2026-089 (Crypto Ring)</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">SHA256: 8a71b...091c • 14 Profiles</div>
+            </div>
+            <button class="btn btn-sm btn-secondary" onclick="window.FPDS_APP.showToast('Report Downloaded', 'Audit dossier exported to local storage.', 'success')">
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              <span>Export</span>
+            </button>
+          </div>
+
+          <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-card); padding: 0.85rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.84rem; color: var(--text-main);">Dossier #FPDS-2026-084 (Executive Spoof)</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">SHA256: c328d...441e • LinkedIn Lead</div>
+            </div>
+            <button class="btn btn-sm btn-secondary" onclick="window.FPDS_APP.showToast('Report Downloaded', 'Audit dossier exported to local storage.', 'success')">
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              <span>Export</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-cancel-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lucide Icons CDN script -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>
+

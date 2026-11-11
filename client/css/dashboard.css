@@ -1,0 +1,918 @@
+/* ==========================================================================
+   FPDS - Fake Social Media Profile Detection and Reporting System
+   Dashboard Layout & Advanced Threat Operations View
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. QUICK SCAN INVESTIGATION BAR
+   -------------------------------------------------------------------------- */
+.investigation-scanner-card {
+  background: linear-gradient(135deg, rgba(23, 32, 51, 0.95) 0%, rgba(18, 26, 44, 0.98) 100%);
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.scanner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.scanner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--primary-blue-subtle);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: var(--primary-blue);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.scanner-input-group {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.scanner-input-wrapper {
+  flex: 1;
+  min-width: 280px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scanner-input {
+  width: 100%;
+  height: 48px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-md);
+  padding: 0 3rem 0 2.85rem;
+  color: var(--text-main);
+  font-size: 0.9375rem;
+  font-family: var(--font-mono);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.scanner-input:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px var(--primary-blue-subtle), var(--shadow-glow-blue);
+}
+
+.scanner-input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--primary-blue);
+  pointer-events: none;
+  display: flex;
+}
+
+.platform-select {
+  width: 170px;
+  height: 48px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-md);
+  padding: 0 1rem;
+  color: var(--text-main);
+  font-size: 0.84rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.platform-select:focus {
+  border-color: var(--primary-blue);
+}
+
+.scanner-action-btn {
+  height: 48px;
+  padding: 0 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.scanner-options-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.scanner-option-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.scanner-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.cyber-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.cyber-checkbox-label input[type="checkbox"] {
+  accent-color: var(--primary-blue);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   2. DASHBOARD MAIN GRID (SPLIT VIEW: INVESTIGATIONS & INSPECTOR)
+   -------------------------------------------------------------------------- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1280px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. ACTIVE INVESTIGATIONS LIST & FILTERS
+   -------------------------------------------------------------------------- */
+.investigations-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.investigations-toolbar {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.table-search-box {
+  position: relative;
+  width: 240px;
+}
+
+.table-search-input {
+  width: 100%;
+  height: 34px;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0 0.75rem 0 2.2rem;
+  color: var(--text-main);
+  font-size: 0.78rem;
+  outline: none;
+}
+
+.table-search-input:focus {
+  border-color: var(--primary-blue);
+}
+
+.table-search-icon {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  pointer-events: none;
+  display: flex;
+}
+
+/* --------------------------------------------------------------------------
+   4. PROFILE INSPECTION DEEP-DIVE PANEL
+   -------------------------------------------------------------------------- */
+.inspector-card {
+  position: sticky;
+  top: calc(var(--topbar-height) + 1.5rem);
+}
+
+.inspector-header-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.inspector-target-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.inspector-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: #1E293B;
+  border: 2px solid var(--border-card-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.inspector-names {
+  display: flex;
+  flex-direction: column;
+}
+
+.inspector-display-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.inspector-handle {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* Overall Threat Score Box */
+.threat-meter-card {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.threat-meter-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.threat-meter-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.threat-score-large {
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.threat-meter-verdict {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+/* Factor Breakdown Bars */
+.breakdown-section {
+  margin-bottom: 1.25rem;
+}
+
+.breakdown-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.factor-item {
+  margin-bottom: 0.75rem;
+}
+
+.factor-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.factor-name {
+  color: var(--text-secondary);
+}
+
+.factor-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Forensic Signals List */
+.signals-section {
+  margin-bottom: 1.25rem;
+}
+
+.signals-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.signal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--color-red);
+}
+
+.signal-icon {
+  color: var(--color-red);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.inspector-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. LIVE THREAT ACTIVITY FEED
+   -------------------------------------------------------------------------- */
+.threat-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.feed-item:hover {
+  border-color: var(--border-card-hover);
+  background: var(--bg-card-hover);
+}
+
+.feed-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feed-icon-box.alert {
+  background: var(--color-red-subtle);
+  color: var(--color-red);
+}
+
+.feed-icon-box.scan {
+  background: var(--primary-blue-subtle);
+  color: var(--primary-blue);
+}
+
+.feed-icon-box.report {
+  background: var(--color-orange-subtle);
+  color: var(--color-orange);
+}
+
+.feed-icon-box.cleared {
+  background: var(--color-green-subtle);
+  color: var(--color-green);
+}
+
+.feed-body {
+  flex: 1;
+}
+
+.feed-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+.feed-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.feed-time {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.feed-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   6. METHODOLOGY MODAL / VIEW STYLING
+   -------------------------------------------------------------------------- */
+.methodology-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.methodology-step-card {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.step-num-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-blue-subtle);
+  color: var(--primary-blue);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.step-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.step-code {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--primary-blue);
+  background: rgba(59, 130, 246, 0.1);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.step-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   7. MULTI-VIEW WORKSPACES
+   -------------------------------------------------------------------------- */
+.view-panel {
+  display: none;
+  animation: fadeInView 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+@keyframes fadeInView {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. DEEP-DIVE FORENSICS WORKBENCH (PROFILE ANALYSIS VIEW)
+   -------------------------------------------------------------------------- */
+.profile-workbench-header {
+  background: linear-gradient(135deg, rgba(23, 32, 51, 0.95) 0%, rgba(18, 26, 44, 0.98) 100%);
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.workbench-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.workbench-avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border: 2px solid var(--border-card-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.workbench-avatar-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 2px solid var(--bg-sidebar);
+}
+
+.workbench-hero-meta h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.workbench-hero-meta p {
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.workbench-score-display {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.workbench-score-box {
+  text-align: right;
+}
+
+.workbench-score-number {
+  font-size: 2.75rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.workbench-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Face Biometric & StyleGAN Analysis Box */
+.face-forensic-box {
+  position: relative;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.face-scan-display {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-sm);
+  background: radial-gradient(circle at center, #1E293B 0%, #0B1120 100%);
+  border: 1px dashed var(--border-card-hover);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.face-landmark-crosshair {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--color-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.face-landmark-crosshair::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--color-red);
+  border-radius: 50%;
+}
+
+.eye-axis-line {
+  position: absolute;
+  height: 1.5px;
+  background: var(--color-red);
+  box-shadow: 0 0 6px var(--color-red);
+}
+
+.biometric-verdict-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-red-subtle);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* 24-Hour Temporal Activity Histogram */
+.temporal-histogram-card {
+  padding: 1.25rem;
+}
+
+.histogram-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.histogram-bars-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 140px;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.histogram-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+  cursor: pointer;
+}
+
+.histogram-bar-bot {
+  width: 100%;
+  background: var(--color-red);
+  border-radius: 2px 2px 0 0;
+  min-height: 4px;
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s;
+}
+
+.histogram-bar-bot.low-risk {
+  background: var(--color-green);
+}
+
+.histogram-column:hover .histogram-bar-bot {
+  background: #FFFFFF;
+}
+
+.histogram-time-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.histogram-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-color-box {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Ego-Network Topology Graph Visualizer */
+.network-graph-card {
+  padding: 1.25rem;
+}
+
+.network-graph-svg-container {
+  width: 100%;
+  height: 240px;
+  background: radial-gradient(circle at center, #172033 0%, #0B1120 100%);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   9. FORMAL ACADEMIC REPORT DOSSIER (REPORTS VIEW)
+   -------------------------------------------------------------------------- */
+.dossier-paper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.dossier-header-strip {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--border-card-hover);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dossier-audit-watermark {
+  position: absolute;
+  right: 2.5rem;
+  top: 7rem;
+  border: 2px solid rgba(239, 68, 68, 0.25);
+  color: rgba(239, 68, 68, 0.3);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.25rem;
+  padding: 0.4rem 1.25rem;
+  border-radius: var(--radius-md);
+  transform: rotate(-8deg);
+  pointer-events: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dossier-grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .dossier-grid-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossier-info-cell {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.dossier-info-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.dossier-info-value {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   10. PRINT MEDIA STYLESHEET
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .sidebar, .topbar, .investigations-toolbar, .btn, .icon-button {
+    display: none !important;
+  }
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+  .dossier-paper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    color: #000000 !important;
+  }
+  .dossier-info-cell {
+    background: #F1F5F9 !important;
+    color: #000000 !important;
+    border: 1px solid #CBD5E1 !important;
+  }
+  .dossier-info-value {
+    color: #000000 !important;
+  }
+}
