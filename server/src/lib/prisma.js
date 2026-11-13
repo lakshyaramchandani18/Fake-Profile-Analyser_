@@ -3,31 +3,33 @@
 /**
  * FPDS — Database Client Adapter
  *
- * Phase 1 (now):   uses in-memory store — full API works, data resets on restart.
- * Phase 2 (Day 3): Member 3 provides Prisma schema + generated client path.
- *                  Set PRISMA_CLIENT_PATH below and remove the in-memory branch.
+ * Automatically detects whether Prisma and DATABASE_URL are available:
+ *   - If DATABASE_URL is set and PrismaClient is installed, uses real PostgreSQL.
+ *   - Otherwise, falls back to the in-memory store for local development/testing.
  *
- * HOW TO SWITCH TO PRISMA (coordinate with Member 3):
- *   1. Member 3 runs `npx prisma generate`.
- *   2. Set PRISMA_CLIENT_PATH to the generated client path (e.g. '../../prisma/generated/client').
- *   3. Set DATABASE_URL in .env.
- *   4. Done — controllers don't need to change at all.
+ * For Member 3 (Prisma setup):
+ *   1. Run `npm install @prisma/client` and `npm install -D prisma` in server/
+ *   2. Run `npx prisma init` (or `npx prisma migrate dev`)
+ *   3. Set DATABASE_URL in server/.env
+ *   4. Done — no manual edits required in controllers or routes!
  */
-
-// ── Set this when Member 3 provides the Prisma generated client ───────────────
-const PRISMA_CLIENT_PATH = null; // e.g. '../../prisma/generated/client'
-// ─────────────────────────────────────────────────────────────────────────────
 
 let db;
 
-if (PRISMA_CLIENT_PATH) {
-  const { PrismaClient } = require(PRISMA_CLIENT_PATH);
-  db = new PrismaClient();
-  console.log('[FPDS] Using Prisma + PostgreSQL');
-} else {
+try {
+  if (process.env.DATABASE_URL) {
+    const prismaClientModule = process.env.PRISMA_CLIENT_PATH || '@prisma/client';
+    const { PrismaClient } = require(prismaClientModule);
+    db = new PrismaClient();
+    console.log('[FPDS] Database: Connected via Prisma Client (PostgreSQL)');
+  } else {
+    throw new Error('DATABASE_URL not set');
+  }
+} catch {
   db = require('./inMemoryStore');
-  console.log('[FPDS] Using in-memory store (no DB configured yet)');
+  console.log('[FPDS] Database: Using in-memory store (fallback)');
 }
 
 module.exports = db;
+
 

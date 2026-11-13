@@ -7,14 +7,17 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test tests/",
+    "test": "node --test 'tests/**/*.test.js'",
     "seed": "node scripts/seed.js"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "keywords": ["fpds", "express", "asd"],
+  "keywords": [
+    "fpds",
+    "express",
+    "asd"
+  ],
   "author": "Member 1",
   "license": "MIT"
 }
-
