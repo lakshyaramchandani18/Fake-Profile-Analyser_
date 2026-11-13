@@ -69,8 +69,26 @@ const profile = {
     return null;
   },
 
-  async findUnique({ where }) {
-    return profilesTable.get(where.id) ?? null;
+  async findUnique({ where, include } = {}) {
+    if (!where || !where.id) return null;
+    const p = profilesTable.get(where.id) ?? null;
+    if (!p) return null;
+    if (include && include.analyses) {
+      const linked = [...analysesTable.values()].filter((a) => a.profileId === p.id);
+      return { ...p, analyses: linked };
+    }
+    return p;
+  },
+
+  async delete({ where }) {
+    if (!where || !where.id) return null;
+    const p = profilesTable.get(where.id);
+    if (!p) return null;
+    profilesTable.delete(where.id);
+    for (const [id, a] of analysesTable.entries()) {
+      if (a.profileId === where.id) analysesTable.delete(id);
+    }
+    return p;
   },
 };
 
