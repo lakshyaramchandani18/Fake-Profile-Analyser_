@@ -59,6 +59,16 @@ const profile = {
     return rows;
   },
 
+
+  async findFirst({ where } = {}) {
+    if (!where) return profilesTable.values().next().value ?? null;
+    const entries = Object.entries(where);
+    for (const rec of profilesTable.values()) {
+      if (entries.every(([k, v]) => rec[k] === v)) return rec;
+    }
+    return null;
+  },
+
   async findUnique({ where }) {
     return profilesTable.get(where.id) ?? null;
   },
@@ -93,4 +103,9 @@ const analysis = {
   },
 };
 
-module.exports = { profile, analysis };
+function _reset() {
+  profilesTable.clear();
+  analysesTable.clear();
+}
+
+module.exports = { profile, analysis, _reset };

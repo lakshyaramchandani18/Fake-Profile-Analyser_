@@ -181,22 +181,75 @@ that map to the existing `dashboard.js` DOM element IDs:
 
 ---
 
-## Switching from In-Memory → Real Database (Day 3)
+## Switching from In-Memory → Real Database (Prisma + PostgreSQL)
 
-When Member 3 provides the Prisma schema and generated client:
+`src/lib/prisma.js` automatically detects if `DATABASE_URL` is set:
+- When `DATABASE_URL` is configured in `.env` and `@prisma/client` is installed, it connects to PostgreSQL.
+- Otherwise, it smoothly falls back to the in-memory store.
 
-1. Open `src/lib/prisma.js`
-2. Set the `PRISMA_CLIENT_PATH` constant to the generated client path
-3. Add `DATABASE_URL` to your `.env` file
-4. Done — no changes needed in controllers, routes, or the risk engine
+### Guide for Member 3 (Database Setup):
+
+1. **Install Prisma in `server/`:**
+   ```bash
+   cd server
+   npm install @prisma/client
+   npm install -D prisma
+   npx prisma init
+   ```
+2. **Add the models to `server/prisma/schema.prisma`:**
+   ```prisma
+   generator client {
+     provider = "prisma-client-js"
+   }
+
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+
+   model Profile {
+     id             String     @id @default(uuid())
+     platform       String
+     handle         String
+     displayName    String
+     bio            String?
+     profileUrl     String?
+     followers      Int
+     following      Int
+     postsCount     Int
+     accountAgeDays Int
+     createdAt      DateTime   @default(now())
+     updatedAt      DateTime   @updatedAt
+     analyses       Analysis[]
+   }
+
+   model Analysis {
+     id             String   @id @default(uuid())
+     profileId      String
+     profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+     score          Int
+     riskLevel      String
+     threatCategory String
+     indicators     Json
+     breakdown      Json
+     createdAt      DateTime @default(now())
+   }
+   ```
+3. **Run migration & generate client:**
+   ```bash
+   npx prisma migrate dev --name init
+   npx prisma generate
+   ```
+4. **Done:** The backend controllers (`profileController`, `analysisController`, `scanController`) will automatically use the real PostgreSQL database without modifying any backend code!
 
 ---
 
 ## Tests
 
 ```bash
-cd server && node --test tests/
-# 21/21 passing — risk engine unit tests
+cd server
+npm test
+# 35/35 passing (21 unit tests for risk engine + 14 controller integration tests)
 ```
 
 ---
