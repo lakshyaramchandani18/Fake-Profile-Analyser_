@@ -10,6 +10,8 @@
     "test": "node --test 'tests/**/*.test.js'",
     "seed": "node scripts/seed.js",
     "db:seed": "node scripts/seed-prisma.js",
+    "db:verify": "node scripts/verify-db.js",
+    "db:reset": "prisma migrate reset --force && node scripts/seed-prisma.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push",
