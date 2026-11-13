@@ -21,9 +21,9 @@ An investigation support tool that allows a forensic analyst to inspect social m
 
 | Member | Domain & Responsibilities | Working Branch | Status |
 |--------|---------------------------|----------------|--------|
-| **Member 1 (Current)** | Express API, 10-rule risk engine, input validation, in-memory DB fallback, integration tests, API formatters | `feature/backend` | **100% Done (Ready for PR)** |
+| **Member 1** | Express API, 10-rule risk engine, input validation, in-memory DB fallback, integration tests, API formatters | `feature/backend` | **100% Done (Merged)** |
 | **Member 2** | Client UI, SOC dashboard, wiring frontend `fetch()` calls to backend endpoints | `feature/frontend` | In Progress (Mock UI complete) |
-| **Member 3** | PostgreSQL database setup, Prisma schema, migrations, PDF export | `feature/database` | Next Up (Ready to start) |
+| **Member 3 (Current)** | PostgreSQL database setup, Prisma schema, migrations, DB seed & verification, ER docs | `feature/database` | **100% Done (Ready for PR)** |
 
 ### Branch Policy
 - **Never push directly to `main`**. All work must be developed on a feature branch (`feature/backend`, `feature/frontend`, etc.) and merged via GitHub Pull Request.
@@ -46,6 +46,14 @@ An investigation support tool that allows a forensic analyst to inspect social m
 - **Database Adapter Upgrade (`src/lib/prisma.js`):** Engineered automatic database detection. The server now checks for `DATABASE_URL` in `.env` — if present and `@prisma/client` is installed, it connects to PostgreSQL; otherwise, it seamlessly uses the in-memory store.
 - **Integration Test Suite (`tests/api.test.js`):** Added 14 controller integration tests covering profile CRUD, analysis flows, 404 handling, and quick scans. Total test suite is **35 / 35 tests passing (100% green)**.
 - **Documentation & Prisma Specification:** Documented ready-to-use Prisma models for Member 3.
+
+### Day 4 (Nov 13) — Member 3 Database Integration
+- **PostgreSQL & Prisma Provisioning:** Configured Prisma v6 ORM with PostgreSQL datasource, UUID primary keys, and cascade foreign key constraints.
+- **Database Migration:** Generated and applied migration `20261113113409_init` creating live `Profile`, `Analysis`, and `_prisma_migrations` tables.
+- **Lifecycle & Health Heartbeat:** Added graceful Prisma disconnection handling on SIGINT/SIGTERM, and extended `/health` endpoint to query PostgreSQL and measure query latency.
+- **Tooling & Automation:** Implemented direct Prisma seeder (`scripts/seed-prisma.js`) and database verification diagnostic (`scripts/verify-db.js`).
+- **Test Suite Expansion:** Authored Prisma model integration tests (`tests/prisma.test.js`). Test suite expanded to **40 / 40 passing tests (100% green)**.
+- **Documentation & Diagrams:** Authored `server/docs/DATABASE.md` and overhauled `README.md` with complete Mermaid system architecture, sequence flows, and ER diagrams.
 
 ---
 
