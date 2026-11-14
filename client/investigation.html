@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPDS — New Profile Investigation | Crime Branch Cyber Forensics</title>
+  
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         FIXED SIDEBAR NAVIGATION (Section 5)
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-wrapper">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="brand-info">
+            <div class="brand-title-row">
+              <span class="brand-name">FPDS</span>
+              <span class="brand-tag">LAW ENF</span>
+            </div>
+            <span class="brand-subtitle">Fake Profile Detection System</span>
+          </div>
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Navigation">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Investigation Modules</div>
+
+        <a href="dashboard.html" class="nav-item" id="nav-dashboard">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="investigation.html" class="nav-item active" id="nav-investigation">
+          <span class="nav-icon"><i data-lucide="plus-circle"></i></span>
+          <span class="nav-label">New Investigation</span>
+          <span class="nav-badge">INTAKE</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item" id="nav-analysis">
+          <span class="nav-icon"><i data-lucide="scan-face"></i></span>
+          <span class="nav-label">Profile Analysis</span>
+        </a>
+
+        <a href="history.html" class="nav-item" id="nav-history">
+          <span class="nav-icon"><i data-lucide="history"></i></span>
+          <span class="nav-label">Investigation History</span>
+        </a>
+
+        <a href="reports.html" class="nav-item" id="nav-reports">
+          <span class="nav-icon"><i data-lucide="file-text"></i></span>
+          <span class="nav-label">Reports</span>
+        </a>
+
+        <a href="methodology.html" class="nav-item" id="nav-methodology">
+          <span class="nav-icon"><i data-lucide="binary"></i></span>
+          <span class="nav-label">Methodology</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-card">
+          <div class="status-indicator-group">
+            <div class="status-beacon"></div>
+            <div class="status-text-details">
+              <span class="status-title">SYSTEM ONLINE</span>
+              <span class="status-meta">Version 1.0.0</span>
+            </div>
+          </div>
+          <span class="status-ping">Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN APPLICATION SHELL
+         ==================================================================== -->
+    <div class="main-wrapper">
+      
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle Navigation">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <div class="breadcrumbs">
+            <a href="dashboard.html" class="breadcrumb-root">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-active">New Profile Investigation</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-secondary); margin-right: 0.5rem;">
+            <i data-lucide="calendar" style="width: 16px; height: 16px; color: var(--primary-blue);"></i>
+            <span id="currentDateDisplay">Loading Date...</span>
+          </div>
+
+          <div class="user-badge-profile">
+            <div class="user-avatar-initials">CB</div>
+            <div class="user-details">
+              <span class="user-name">Forensic Investigator</span>
+              <span class="user-role">INTAKE TERMINAL</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Content Area -->
+      <main class="content-body">
+        
+        <section class="page-header">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">
+                <span>New Profile Investigation</span>
+              </h1>
+              <p class="page-description">
+                Enter social media account information for suspicious profile assessment.
+              </p>
+            </div>
+            
+            <div class="page-header-actions">
+              <a href="methodology.html" class="btn btn-secondary">
+                <i data-lucide="binary" style="width: 16px; height: 16px;"></i>
+                <span>Review Scoring Rules</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Intake Form Card (Section 7) -->
+        <div class="form-card">
+          <div class="card-title-group" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+            <div class="card-title-indicator"></div>
+            <div>
+              <h2 class="card-title">Suspect Account Intake Form</h2>
+              <p class="card-subtitle">All parameters are evaluated against the rule-based heuristic engine</p>
+            </div>
+          </div>
+
+          <form id="investigationForm" novalidate>
+            
+            <!-- Row 1: Username & Platform -->
+            <div class="form-row-two">
+              <div class="form-group">
+                <label class="form-label" for="inputUsername">
+                  Social Media Username <span style="color: var(--color-red);">*</span>
+                </label>
+                <div class="input-container">
+                  <span class="input-icon-slot">
+                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="inputUsername" 
+                    class="form-input input-with-icon" 
+                    placeholder="e.g. crypto_bot_942" 
+                    required 
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="selectPlatform">
+                  Social Media Platform <span style="color: var(--color-red);">*</span>
+                </label>
+                <select id="selectPlatform" class="form-select" required>
+                  <option value="" disabled selected>Select Platform...</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="X">X (formerly Twitter)</option>
+                  <option value="TikTok">TikTok</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: Account Age & Number of Posts -->
+            <div class="form-row-two">
+              <div class="form-group">
+                <label class="form-label" for="inputAccountAge">
+                  Account Age (in days) <span style="color: var(--color-red);">*</span>
+                </label>
+                <input 
+                  type="number" 
+                  id="inputAccountAge" 
+                  class="form-input" 
+                  placeholder="e.g. 18" 
+                  min="0" 
+                  required 
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inputPosts">
+                  Number of Posts <span style="color: var(--color-red);">*</span>
+                </label>
+                <input 
+                  type="number" 
+                  id="inputPosts" 
+                  class="form-input" 
+                  placeholder="e.g. 3" 
+                  min="0" 
+                  required 
+                />
+              </div>
+            </div>
+
+            <!-- Row 3: Followers & Following -->
+            <div class="form-row-two">
+              <div class="form-group">
+                <label class="form-label" for="inputFollowers">
+                  Number of Followers <span style="color: var(--color-red);">*</span>
+                </label>
+                <input 
+                  type="number" 
+                  id="inputFollowers" 
+                  class="form-input" 
+                  placeholder="e.g. 8" 
+                  min="0" 
+                  required 
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inputFollowing">
+                  Number of Following <span style="color: var(--color-red);">*</span>
+                </label>
+                <input 
+                  type="number" 
+                  id="inputFollowing" 
+                  class="form-input" 
+                  placeholder="e.g. 2400" 
+                  min="0" 
+                  required 
+                />
+              </div>
+            </div>
+
+            <!-- Row 4: Binary Heuristic Toggles -->
+            <div class="form-row-three">
+              <div class="form-group">
+                <label class="form-label" for="selectProfilePic">
+                  Profile Picture Available <span style="color: var(--color-red);">*</span>
+                </label>
+                <select id="selectProfilePic" class="form-select">
+                  <option value="yes" selected>Yes (Custom Picture Present)</option>
+                  <option value="no">No (Default/Missing Avatar)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="selectUserFlagged">
+                  Username Flagged Suspicious? <span style="color: var(--color-red);">*</span>
+                </label>
+                <select id="selectUserFlagged" class="form-select">
+                  <option value="no" selected>No (Standard Format)</option>
+                  <option value="yes">Yes (Gibberish / Bot Pattern)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="selectUnusualActivity">
+                  Unusual Activity Observed? <span style="color: var(--color-red);">*</span>
+                </label>
+                <select id="selectUnusualActivity" class="form-select">
+                  <option value="no" selected>No (Normal Cadence)</option>
+                  <option value="yes">Yes (Bursts / Spam Loops)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 5: Notes -->
+            <div class="form-group">
+              <label class="form-label" for="inputNotes">
+                Investigator Notes (Optional)
+              </label>
+              <textarea 
+                id="inputNotes" 
+                class="form-textarea" 
+                rows="3" 
+                placeholder="Log observed behaviors, phishing links, associated case numbers, or suspect aliases..."
+              ></textarea>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="form-actions-row">
+              <button type="button" class="btn btn-secondary" id="resetFormBtn">
+                <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+                <span>Reset Form</span>
+              </button>
+
+              <button type="button" class="btn btn-secondary" id="saveProfileBtn">
+                <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+                <span>Save Profile</span>
+              </button>
+
+              <button type="button" class="btn btn-primary" id="saveAndAnalyzeBtn">
+                <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+                <span>Save and Analyze</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Law Enforcement Disclaimer -->
+        <div class="disclaimer-banner">
+          <i data-lucide="alert-triangle" class="disclaimer-icon" style="width: 20px; height: 20px;"></i>
+          <div class="disclaimer-text">
+            <strong>System Forensic Advisory:</strong> The system provides a heuristic assessment based on supplied information. A high-risk score does not prove that an account is fake or involved in criminal activity. Independent verification and further investigation are required.
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/investigation.js"></script>
+
+</body>
+</html>

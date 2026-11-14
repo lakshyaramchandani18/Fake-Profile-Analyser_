@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPDS — Profile Analysis Assessment | Crime Branch Cyber Forensics</title>
+  
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         FIXED SIDEBAR NAVIGATION (Section 5)
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-wrapper">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="brand-info">
+            <div class="brand-title-row">
+              <span class="brand-name">FPDS</span>
+              <span class="brand-tag">LAW ENF</span>
+            </div>
+            <span class="brand-subtitle">Fake Profile Detection System</span>
+          </div>
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Navigation">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Investigation Modules</div>
+
+        <a href="dashboard.html" class="nav-item" id="nav-dashboard">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="investigation.html" class="nav-item" id="nav-investigation">
+          <span class="nav-icon"><i data-lucide="plus-circle"></i></span>
+          <span class="nav-label">New Investigation</span>
+          <span class="nav-badge">INTAKE</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item active" id="nav-analysis">
+          <span class="nav-icon"><i data-lucide="scan-face"></i></span>
+          <span class="nav-label">Profile Analysis</span>
+        </a>
+
+        <a href="history.html" class="nav-item" id="nav-history">
+          <span class="nav-icon"><i data-lucide="history"></i></span>
+          <span class="nav-label">Investigation History</span>
+        </a>
+
+        <a href="reports.html" class="nav-item" id="nav-reports">
+          <span class="nav-icon"><i data-lucide="file-text"></i></span>
+          <span class="nav-label">Reports</span>
+        </a>
+
+        <a href="methodology.html" class="nav-item" id="nav-methodology">
+          <span class="nav-icon"><i data-lucide="binary"></i></span>
+          <span class="nav-label">Methodology</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-card">
+          <div class="status-indicator-group">
+            <div class="status-beacon"></div>
+            <div class="status-text-details">
+              <span class="status-title">SYSTEM ONLINE</span>
+              <span class="status-meta">Version 1.0.0</span>
+            </div>
+          </div>
+          <span class="status-ping">Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN APPLICATION SHELL
+         ==================================================================== -->
+    <div class="main-wrapper">
+      
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle Navigation">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <div class="breadcrumbs">
+            <a href="dashboard.html" class="breadcrumb-root">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-active">Profile Forensic Assessment</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <a href="dashboard.html" class="btn btn-sm btn-secondary">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="history.html" class="btn btn-sm btn-secondary">
+            <i data-lucide="history" style="width: 14px; height: 14px;"></i>
+            <span>View History</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Body Content Area -->
+      <main class="content-body">
+        
+        <!-- Profile Identity Hero Header -->
+        <section class="profile-workbench-header">
+          <div class="workbench-profile-hero">
+            <div class="workbench-avatar-large">
+              <i data-lucide="scan-face" style="width: 36px; height: 36px; color: var(--primary-blue);"></i>
+            </div>
+            <div class="workbench-hero-meta">
+              <h2>
+                <span id="analysisUsername">@loading_suspect</span>
+                <span id="analysisPlatform" class="platform-icon-pill x">X</span>
+              </h2>
+              <p>Case Reference: <span id="analysisCaseId" style="color: var(--primary-blue);">INV-2026-000</span> • Assessed: <span id="analysisDate">Today</span></p>
+            </div>
+          </div>
+
+          <div class="workbench-score-display">
+            <button class="btn btn-primary" id="generateReportBtn">
+              <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              <span>Generate Report</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Risk Score Visualization (Section 8) -->
+        <section class="risk-score-hero-box" id="riskMeterBox">
+          <div>
+            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 0.4rem;">
+              Heuristic Forensic Risk Index
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+              <span id="riskScoreNumber" class="score-large-val critical">75</span>
+              <span style="font-size: 1.25rem; font-family: var(--font-mono); color: var(--text-muted);">/ 100</span>
+            </div>
+            <div class="progress-bar-container" style="width: 260px; height: 8px; margin-top: 0.75rem;">
+              <div id="riskScoreProgressBar" class="progress-fill critical" style="width: 75%;"></div>
+            </div>
+          </div>
+
+          <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">CLASSIFICATION LEVEL</div>
+            <span id="riskScoreLevel" class="risk-badge critical btn-lg">CRITICAL RISK</span>
+            <span style="font-size: 0.72rem; color: var(--text-secondary); max-width: 240px;">
+              Threshold &ge; 75 points indicates extreme probability of synthetic persona or automated bot farm.
+            </span>
+          </div>
+        </section>
+
+        <!-- Account Metadata Grid -->
+        <section class="stat-card-grid" style="margin-bottom: 2rem;">
+          <div class="cyber-card" style="padding: 1.25rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Account Age</span>
+            <div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); margin-top: 0.35rem;" id="metaAccountAge">14 Days</div>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.25rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Post Count</span>
+            <div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); margin-top: 0.35rem;" id="metaPosts">2</div>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.25rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Followers Count</span>
+            <div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); margin-top: 0.35rem;" id="metaFollowers">8</div>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.25rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Following Count</span>
+            <div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); margin-top: 0.35rem;" id="metaFollowing">3,450</div>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.25rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Avatar Status</span>
+            <div style="font-size: 0.95rem; font-weight: 700; margin-top: 0.5rem;" id="metaPicStatus">Default / Missing</div>
+          </div>
+        </section>
+
+        <!-- Investigator Notes Block -->
+        <section class="cyber-card" style="margin-bottom: 2rem;">
+          <div class="cyber-card-header">
+            <div class="card-title-group">
+              <div class="card-title-indicator" style="background-color: var(--primary-blue);"></div>
+              <h3 class="card-title">Case Notes & Investigative Observations</h3>
+            </div>
+          </div>
+          <div class="cyber-card-body">
+            <p id="metaNotes" style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+              No notes entered.
+            </p>
+          </div>
+        </section>
+
+        <!-- Evidence Indicators Section (Section 8) -->
+        <section style="margin-bottom: 2rem;">
+          <div class="card-title-group" style="margin-bottom: 1rem;">
+            <div class="card-title-indicator" style="background-color: var(--color-red);"></div>
+            <div>
+              <h3 class="card-title">Suspicious Characteristic Indicators</h3>
+              <p class="card-subtitle">Detailed breakdown of rule-based triggers contributing to the risk score</p>
+            </div>
+          </div>
+
+          <div id="evidenceCardsContainer">
+            <!-- Populated dynamically via analysis.js -->
+          </div>
+        </section>
+
+        <!-- Navigation Actions Row -->
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="dashboard.html" class="btn btn-secondary">
+            <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+            <span>Back to Dashboard</span>
+          </a>
+          <a href="history.html" class="btn btn-secondary">
+            <i data-lucide="history" style="width: 16px; height: 16px;"></i>
+            <span>View All Investigation History</span>
+          </a>
+          <a href="investigation.html" class="btn btn-primary">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>New Investigation</span>
+          </a>
+        </div>
+
+        <!-- Law Enforcement Disclaimer (Section 11) -->
+        <div class="disclaimer-banner">
+          <i data-lucide="alert-triangle" class="disclaimer-icon" style="width: 20px; height: 20px;"></i>
+          <div class="disclaimer-text">
+            <strong>Legal & Investigative Disclaimer:</strong> The system provides a heuristic assessment based on supplied information. A high-risk score does not prove that an account is fake or involved in criminal activity. Independent verification and further investigation are required.
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Generate Report Placeholder Notice (Section 8 & 10) -->
+  <div class="modal-overlay" id="reportNoticeModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i data-lucide="file-text" style="width: 20px; height: 20px; color: var(--primary-blue);"></i>
+          <span>Forensic Report Export</span>
+        </div>
+        <button class="modal-close-btn" id="closeReportNoticeModal" aria-label="Close modal">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center; padding: 1rem 0;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--color-yellow-subtle); color: var(--color-yellow); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+            <i data-lucide="info" style="width: 26px; height: 26px;"></i>
+          </div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+            Backend PDF Service Integration Notice
+          </h3>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; max-width: 440px; margin: 0 auto 1.5rem;">
+            The frontend has successfully compiled all forensic evidence tokens and heuristic calculations for this target. Generating actual cryptographically signed PDF documents will be executed via the Express / Puppeteer backend API in Phase 2.
+          </p>
+          <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-align: left;">
+            <div>Target Endpoint: POST http://localhost:5000/api/reports/generate</div>
+            <div style="color: var(--color-green); margin-top: 0.25rem;">Frontend Payload: Ready & Verified in localStorage</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="reports.html" class="btn btn-primary">
+          <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+          <span>View Reports Archive</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/analysis.js"></script>
+
+</body>
+</html>

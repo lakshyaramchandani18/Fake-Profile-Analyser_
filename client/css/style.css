@@ -37,9 +37,9 @@
   --text-highlight: #FFFFFF;
 
   /* Borders & Dividers */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-card: #1E293B;
-  --border-card-hover: #334155;
+  --border-subtle: #263247;
+  --border-card: #263247;
+  --border-card-hover: #3B82F6;
   --border-focus: rgba(59, 130, 246, 0.6);
 
   /* Shadows */

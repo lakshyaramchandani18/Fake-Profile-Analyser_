@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPDS — Scoring Methodology & Evaluation Criteria | Cyber Forensics</title>
+  
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ====================================================================
+         FIXED SIDEBAR NAVIGATION (Section 5)
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-wrapper">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="brand-info">
+            <div class="brand-title-row">
+              <span class="brand-name">FPDS</span>
+              <span class="brand-tag">LAW ENF</span>
+            </div>
+            <span class="brand-subtitle">Fake Profile Detection System</span>
+          </div>
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Navigation">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Investigation Modules</div>
+
+        <a href="dashboard.html" class="nav-item" id="nav-dashboard">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a href="investigation.html" class="nav-item" id="nav-investigation">
+          <span class="nav-icon"><i data-lucide="plus-circle"></i></span>
+          <span class="nav-label">New Investigation</span>
+          <span class="nav-badge">INTAKE</span>
+        </a>
+
+        <a href="analysis.html" class="nav-item" id="nav-analysis">
+          <span class="nav-icon"><i data-lucide="scan-face"></i></span>
+          <span class="nav-label">Profile Analysis</span>
+        </a>
+
+        <a href="history.html" class="nav-item" id="nav-history">
+          <span class="nav-icon"><i data-lucide="history"></i></span>
+          <span class="nav-label">Investigation History</span>
+        </a>
+
+        <a href="reports.html" class="nav-item" id="nav-reports">
+          <span class="nav-icon"><i data-lucide="file-text"></i></span>
+          <span class="nav-label">Reports</span>
+        </a>
+
+        <a href="methodology.html" class="nav-item active" id="nav-methodology">
+          <span class="nav-icon"><i data-lucide="binary"></i></span>
+          <span class="nav-label">Methodology</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-card">
+          <div class="status-indicator-group">
+            <div class="status-beacon"></div>
+            <div class="status-text-details">
+              <span class="status-title">SYSTEM ONLINE</span>
+              <span class="status-meta">Version 1.0.0</span>
+            </div>
+          </div>
+          <span class="status-ping">Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN APPLICATION SHELL
+         ==================================================================== -->
+    <div class="main-wrapper">
+      
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle Navigation">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+          
+          <div class="breadcrumbs">
+            <a href="dashboard.html" class="breadcrumb-root">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-active">Heuristic Scoring Methodology</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <a href="investigation.html" class="btn btn-primary btn-sm">
+            <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
+            <span>Test Heuristic In Intake</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Body Content Area -->
+      <main class="content-body">
+        
+        <section class="page-header">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">
+                <span>Rule-Based Scoring Methodology</span>
+              </h1>
+              <p class="page-description">
+                Formal mathematical heuristic scoring framework applied to evaluate profile anomalies and synthetic persona indicators.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Scoring Criteria Table (Section 11) -->
+        <section class="cyber-card" style="margin-bottom: 2rem;">
+          <div class="cyber-card-header">
+            <div class="card-title-group">
+              <div class="card-title-indicator" style="background-color: var(--primary-blue);"></div>
+              <div>
+                <h3 class="card-title">Heuristic Risk Scoring Matrix</h3>
+                <p class="card-subtitle">Each observed attribute incurs weighted points toward a maximum score of 100</p>
+              </div>
+            </div>
+            <span class="risk-badge low">MAX SCORE: 100</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="scoring-table">
+              <thead>
+                <tr>
+                  <th>Heuristic Attribute</th>
+                  <th>Observed Condition</th>
+                  <th>Weight / Points</th>
+                  <th>Forensic Rationale</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 700;">Account Age</td>
+                  <td>Less than 30 days</td>
+                  <td class="scoring-points-cell">+20 Pts</td>
+                  <td style="color: var(--text-secondary);">Disposable burner accounts and botnet syndicates are heavily concentrated in sub-30-day lifespans.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Account Age</td>
+                  <td>30–90 days</td>
+                  <td class="scoring-points-cell">+10 Pts</td>
+                  <td style="color: var(--text-secondary);">Incubation period where sleeper bots undergo warmup before coordinated deployment.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Post Count</td>
+                  <td>Fewer than 5 posts</td>
+                  <td class="scoring-points-cell">+15 Pts</td>
+                  <td style="color: var(--text-secondary);">Synthetic profiles rarely maintain consistent original publishing cadence.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Profile Picture</td>
+                  <td>Missing / Default Avatar</td>
+                  <td class="scoring-points-cell">+15 Pts</td>
+                  <td style="color: var(--text-secondary);">Absence of custom portrait strongly correlates with mass programmatic account creation.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Following Imbalance</td>
+                  <td>Following &gt; 10&times; Followers AND Following &ge; 100</td>
+                  <td class="scoring-points-cell">+15 Pts</td>
+                  <td style="color: var(--text-secondary);">Hallmark signature of automated mass-following scripts attempting to solicit follow-backs.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Follower Count</td>
+                  <td>Fewer than 10 followers</td>
+                  <td class="scoring-points-cell">+10 Pts</td>
+                  <td style="color: var(--text-secondary);">Minimal organic social reciprocation from human network peers.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Username Flagged</td>
+                  <td>Manually flagged for suspicious pattern</td>
+                  <td class="scoring-points-cell">+10 Pts</td>
+                  <td style="color: var(--text-secondary);">Alphanumeric gibberish tails, impersonation handles, or known phishing prefix strings.</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 700;">Unusual Activity</td>
+                  <td>Manually flagged for abnormal behavior</td>
+                  <td class="scoring-points-cell">+5 Pts</td>
+                  <td style="color: var(--text-secondary);">Irregular broadcast bursts, spam loop commenting, or off-hours circadian anomalies.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Risk Classification Tiers (Section 11) -->
+        <section class="stat-card-grid" style="margin-bottom: 2rem;">
+          
+          <div class="cyber-card" style="padding: 1.5rem; border-top: 3px solid var(--color-green);">
+            <span class="risk-badge low" style="margin-bottom: 0.5rem;">0 – 24 POINTS</span>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-green); margin-bottom: 0.35rem;">LOW RISK</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+              Account exhibits consistent organic human behaviors, balanced social ratios, and verifiable digital footprint.
+            </p>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.5rem; border-top: 3px solid var(--color-yellow);">
+            <span class="risk-badge medium" style="margin-bottom: 0.5rem;">25 – 49 POINTS</span>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-yellow); margin-bottom: 0.35rem;">MEDIUM RISK</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+              Minor behavioral anomalies or incomplete account setup. Warranting routine surveillance without immediate sanction.
+            </p>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.5rem; border-top: 3px solid var(--color-orange);">
+            <span class="risk-badge high" style="margin-bottom: 0.5rem;">50 – 74 POINTS</span>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-orange); margin-bottom: 0.35rem;">HIGH RISK</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+              Substantial evidence of automated scripting, extreme follow asymmetry, or burner incubation attributes.
+            </p>
+          </div>
+
+          <div class="cyber-card" style="padding: 1.5rem; border-top: 3px solid var(--color-red);">
+            <span class="risk-badge critical" style="margin-bottom: 0.5rem;">75 – 100 POINTS</span>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--color-red); margin-bottom: 0.35rem;">CRITICAL RISK</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+              High-confidence fake or automated bot farm. Compounded anomalous flags indicate fraudulent impersonation.
+            </p>
+          </div>
+
+        </section>
+
+        <!-- Interactive Heuristic Simulator (Section 11) -->
+        <section class="cyber-card simulator-card">
+          <div class="cyber-card-header" style="padding-left: 0; padding-right: 0;">
+            <div class="card-title-group">
+              <div class="card-title-indicator" style="background-color: var(--primary-blue);"></div>
+              <div>
+                <h3 class="card-title">Interactive Scoring Simulator</h3>
+                <p class="card-subtitle">Test how dynamic combinations of heuristic conditions aggregate into the threat index</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-two" style="margin-top: 1.25rem;">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="simAge">Account Age Condition</label>
+                <select id="simAge" class="form-select">
+                  <option value="0">Established (&gt; 90 days) [0 Pts]</option>
+                  <option value="10">Recent (30–90 days) [+10 Pts]</option>
+                  <option value="20" selected>Very New (&lt; 30 days) [+20 Pts]</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="simPosts">Post Count Condition</label>
+                <select id="simPosts" class="form-select">
+                  <option value="0">Adequate Content (&ge; 5 posts) [0 Pts]</option>
+                  <option value="15" selected>Low Post Count (&lt; 5 posts) [+15 Pts]</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="simPic">Profile Picture Availability</label>
+                <select id="simPic" class="form-select">
+                  <option value="0">Picture Present [0 Pts]</option>
+                  <option value="15" selected>Missing / Default Avatar [+15 Pts]</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="simRatio">Following Imbalance Ratio</label>
+                <select id="simRatio" class="form-select">
+                  <option value="0">Normal Following Ratio [0 Pts]</option>
+                  <option value="15" selected>Following &gt; 10&times; Followers &amp; &ge; 100 [+15 Pts]</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="simFollowers">Follower Count Condition</label>
+                <select id="simFollowers" class="form-select">
+                  <option value="0">Standard (&ge; 10 followers) [0 Pts]</option>
+                  <option value="10" selected>Extremely Low (&lt; 10 followers) [+10 Pts]</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="simUsername">Username Flagging</label>
+                <select id="simUsername" class="form-select">
+                  <option value="0">Normal Username [0 Pts]</option>
+                  <option value="10" selected>Suspicious Username Pattern [+10 Pts]</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="simActivity">Unusual Activity Flagging</label>
+                <select id="simActivity" class="form-select">
+                  <option value="0">Normal Cadence [0 Pts]</option>
+                  <option value="5" selected>Unusual Bursts / Activity Observed [+5 Pts]</option>
+                </select>
+              </div>
+
+              <!-- Real-Time Simulator Output Gauge -->
+              <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1.5rem;">
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Aggregated Threat Index</div>
+                <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 0.35rem;">
+                  <div style="display: flex; align-items: baseline; gap: 0.35rem;">
+                    <span id="simScoreValue" class="score-large-val critical">90</span>
+                    <span style="font-family: var(--font-mono); color: var(--text-muted);">/ 100</span>
+                  </div>
+                  <span id="simScoreBadge" class="risk-badge critical">CRITICAL RISK</span>
+                </div>
+                <div class="progress-bar-container" style="margin-top: 0.75rem;">
+                  <div id="simScoreBar" class="progress-fill critical" style="width: 90%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mandatory Law Enforcement Disclaimer (Section 11) -->
+        <div class="disclaimer-banner">
+          <i data-lucide="alert-triangle" class="disclaimer-icon" style="width: 20px; height: 20px;"></i>
+          <div class="disclaimer-text">
+            <strong>Investigative & Legal Disclaimer:</strong> The system provides a heuristic assessment based on supplied information. A high-risk score does not prove that an account is fake or involved in criminal activity. Independent verification and further investigation are required.
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/mock-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/methodology.js"></script>
+
+</body>
+</html>

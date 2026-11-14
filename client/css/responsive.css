@@ -1,0 +1,168 @@
+/* ==========================================================================
+   FPDS - Fake Profile Detection System
+   Responsive Design Breakpoints Stylesheet
+   Supports: 1440px (Desktop), 1024px (Laptop), 768px (Tablet), 375px (Mobile)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. LAPTOP BREAKPOINT (<= 1280px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. TABLET LANDSCAPE / LAPTOP BREAKPOINT (<= 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  /* Sidebar Drawer Collapse */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .topbar {
+    padding: 0 1.25rem !important;
+  }
+
+  .content-body {
+    padding: 1.25rem !important;
+  }
+
+  .stat-card-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .dossier-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. TABLET PORTRAIT BREAKPOINT (<= 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .topbar-search-container {
+    display: none !important;
+  }
+
+  .user-details {
+    display: none !important;
+  }
+
+  .stat-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .page-header-actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: stretch !important;
+  }
+
+  .page-header-actions .btn {
+    flex: 1 !important;
+  }
+
+  .form-row-two, .form-row-three {
+    grid-template-columns: 1fr !important;
+  }
+
+  .investigations-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .investigations-toolbar .filter-group {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .investigations-toolbar .form-select,
+  .investigations-toolbar .table-search-input {
+    width: 100% !important;
+  }
+
+  .risk-score-hero-box {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .priority-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .chart-card-body {
+    height: 280px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. MOBILE BREAKPOINT (<= 375px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .topbar {
+    padding: 0 0.85rem !important;
+  }
+
+  .content-body {
+    padding: 1rem 0.75rem !important;
+  }
+
+  .page-title {
+    font-size: 1.35rem !important;
+  }
+
+  .score-large-val {
+    font-size: 2.25rem !important;
+  }
+
+  .btn {
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem !important;
+    padding: 0 !important;
+  }
+
+  .cyber-card-header {
+    padding: 1rem !important;
+  }
+
+  .cyber-card-body {
+    padding: 1rem !important;
+  }
+}
