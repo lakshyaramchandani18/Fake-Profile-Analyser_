@@ -90,6 +90,10 @@ const profile = {
     }
     return p;
   },
+
+  async count() {
+    return profilesTable.size;
+  },
 };
 
 const analysis = {
@@ -118,6 +122,10 @@ const analysis = {
 
   async findUnique({ where }) {
     return analysesTable.get(where.id) ?? null;
+  },
+
+  async count() {
+    return analysesTable.size;
   },
 };
 

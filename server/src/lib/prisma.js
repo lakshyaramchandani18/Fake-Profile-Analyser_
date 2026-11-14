@@ -20,8 +20,11 @@ try {
   if (process.env.DATABASE_URL) {
     const prismaClientModule = process.env.PRISMA_CLIENT_PATH || '@prisma/client';
     const { PrismaClient } = require(prismaClientModule);
-    db = new PrismaClient();
-    console.log('[FPDS] Database: Connected via Prisma Client (PostgreSQL)');
+    const { PrismaPg } = require('@prisma/adapter-pg');
+
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+    db = new PrismaClient({ adapter });
+    console.log('[FPDS] Database: Connected via Prisma Client (PostgreSQL Adapter)');
   } else {
     throw new Error('DATABASE_URL not set');
   }

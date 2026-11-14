@@ -9,19 +9,17 @@
     "dev": "node --watch src/server.js",
     "test": "node --test 'tests/**/*.test.js'",
     "seed": "node scripts/seed.js",
-    "db:seed": "node scripts/seed-prisma.js",
     "db:verify": "node scripts/verify-db.js",
-    "db:reset": "prisma migrate reset --force && node scripts/seed-prisma.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
     "cors": "^2.8.6",
     "dotenv": "^18.0.10",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -34,6 +32,7 @@
   "author": "Member 1",
   "license": "MIT",
   "devDependencies": {
-    "prisma": "^6.19.3"
+    "@prisma/config": "^7.10.1",
+    "prisma": "^7.10.1"
   }
 }
