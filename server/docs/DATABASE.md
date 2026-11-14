@@ -1,9 +1,9 @@
 # FPDS — Database & Persistence Architecture (Member 3)
 
-> **Document Version:** 1.0.0  
+> **Document Version:** 1.1.0  
 > **Target Audience:** Digital Forensics Engineers, Backend Developers, and System Administrators  
 > **Database Engine:** PostgreSQL 16+  
-> **ORM Layer:** Prisma ORM v6 (`@prisma/client`)  
+> **ORM Layer:** Prisma ORM v7 (`@prisma/client`, `@prisma/adapter-pg`, `@prisma/config`)  
 
 ---
 
@@ -78,14 +78,40 @@ Stores historical forensic risk assessments produced by the pure-function risk e
 
 ---
 
-## 3. Database Integrity & Cascade Semantics
+## 3. Prisma 7 Architecture & Driver Adapter
+
+Prisma 7 decouples environment-dependent connection URLs from `schema.prisma`:
+- **CLI & Migrations:** The CLI reads connection URLs from [`server/prisma.config.js`](file:///Users/sushantgupta/Desktop/Fake-Profile-Analyser_/server/prisma.config.js) via `@prisma/config`'s `defineConfig`:
+  ```javascript
+  const { defineConfig, env } = require('@prisma/config');
+  require('dotenv').config();
+
+  module.exports = defineConfig({
+    schema: 'prisma/schema.prisma',
+    datasource: {
+      url: env('DATABASE_URL'),
+    },
+  });
+  ```
+- **Runtime Client:** `PrismaClient` connects via `@prisma/adapter-pg` driver adapter, ensuring native Node.js PostgreSQL connection pooling:
+  ```javascript
+  const { PrismaClient } = require('@prisma/client');
+  const { PrismaPg } = require('@prisma/adapter-pg');
+
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+  const db = new PrismaClient({ adapter });
+  ```
+
+---
+
+## 4. Database Integrity & Cascade Semantics
 
 - **Cascade On Delete (`ON DELETE CASCADE`)**: If a forensic investigation profile is expunged or archived from the database, all historical risk analyses linked to that profile are automatically purged to prevent orphaned assessment records.
 - **Relational Query Performance**: The relation between `Profile` and `Analysis` allows `O(1)` joining of the profile's most recent risk score using Prisma's `include: { analyses: { orderBy: { createdAt: 'desc' }, take: 1 } }`.
 
 ---
 
-## 4. Common CLI Database Operations
+## 5. Common CLI Database Operations
 
 | Task | Command |
 |------|---------|

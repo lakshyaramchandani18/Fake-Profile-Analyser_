@@ -47,12 +47,13 @@ An investigation support tool that allows a forensic analyst to inspect social m
 - **Integration Test Suite (`tests/api.test.js`):** Added 14 controller integration tests covering profile CRUD, analysis flows, 404 handling, and quick scans. Total test suite is **35 / 35 tests passing (100% green)**.
 - **Documentation & Prisma Specification:** Documented ready-to-use Prisma models for Member 3.
 
-### Day 4 (Nov 13) — Member 3 Database Integration
-- **PostgreSQL & Prisma Provisioning:** Configured Prisma v6 ORM with PostgreSQL datasource, UUID primary keys, and cascade foreign key constraints.
+### Day 4 & 5 (Nov 13–14) — Member 3 Database Integration & Forensic Reporting
+- **PostgreSQL & Prisma 7 Architecture:** Provisioned Prisma 7 ORM with PostgreSQL datasource, UUID primary keys, and cascade foreign key constraints. Migrated connection URLs to modern `prisma.config.js` with `@prisma/adapter-pg` driver adapter.
 - **Database Migration:** Generated and applied migration `20261113113409_init` creating live `Profile`, `Analysis`, and `_prisma_migrations` tables.
+- **Crime Branch Forensic Dossier:** Implemented formal law-enforcement report generator (`toCrimeBranchReport`) and endpoint `GET /api/profiles/:id/report` providing full case metadata, threat classification, and hash-verified chain-of-custody.
+- **Unified Master Seeder:** Built unified seeder in `scripts/seed.js` with automatic mode switching between PostgreSQL (via Prisma ORM) and in-memory store fallback.
 - **Lifecycle & Health Heartbeat:** Added graceful Prisma disconnection handling on SIGINT/SIGTERM, and extended `/health` endpoint to query PostgreSQL and measure query latency.
-- **Tooling & Automation:** Implemented direct Prisma seeder (`scripts/seed-prisma.js`) and database verification diagnostic (`scripts/verify-db.js`).
-- **Test Suite Expansion:** Authored Prisma model integration tests (`tests/prisma.test.js`). Test suite expanded to **40 / 40 passing tests (100% green)**.
+- **Test Suite Expansion:** Expanded test suite with controller integration tests for the report endpoint and Prisma adapter tests. Test suite is **41 / 41 passing tests (100% green)**.
 - **Documentation & Diagrams:** Authored `server/docs/DATABASE.md` and overhauled `README.md` with complete Mermaid system architecture, sequence flows, and ER diagrams.
 
 ---
@@ -82,14 +83,19 @@ Fake-Profile-Analyser_/
     ├── BACKEND.md                  ← Detailed API specification & guide
     ├── package.json                ← Express 5, Node >=20, npm test runner
     ├── .env.example                ← Template: PORT=3000, DATABASE_URL
+    ├── prisma.config.js            ← Prisma 7 CLI & migration configuration
+    ├── prisma/
+    │   ├── schema.prisma           ← Prisma data models (Profile & Analysis)
+    │   └── migrations/             ← Applied PostgreSQL migrations
     ├── scripts/
-    │   └── seed.js                 ← Seeds 5 test investigation profiles via API
+    │   ├── seed.js                 ← Unified master seeder (Prisma ORM + in-memory)
+    │   └── verify-db.js            ← Database connectivity & latency diagnostic
     ├── src/
     │   ├── server.js               ← Entry point (boots on PORT 3000)
     │   ├── app.js                  ← Express app, CORS (allows 8080 & 5500), JSON parser
     │   ├── routes/
     │   │   ├── health.js           ← GET /health
-    │   │   ├── profiles.js         ← Profile CRUD + /dashboard endpoint
+    │   │   ├── profiles.js         ← Profile CRUD, /dashboard & /:id/report
     │   │   ├── analyses.js         ← Analysis retrieval endpoints
     │   │   ├── stats.js            ← GET /api/stats for dashboard KPI cards
     │   │   └── scan.js             ← POST /api/scan for quick scan widget
@@ -104,13 +110,13 @@ Fake-Profile-Analyser_/
     │   │   ├── validate.js         ← Input sanitization & schema validation
     │   │   └── errorHandler.js     ← Centralized JSON error response handler
     │   ├── lib/
-    │   │   ├── prisma.js           ← Auto-switching DB adapter (Prisma ↔ inMemory)
+    │   │   ├── prisma.js           ← Auto-switching DB adapter (Prisma 7 ↔ inMemory)
     │   │   └── inMemoryStore.js    ← Map-based in-memory store with Prisma-like API
     │   └── utils/
-    │       └── formatters.js       ← Formats DB entities into dashboard UI shape
+    │       └── formatters.js       ← Formats DB entities into dashboard UI shape & Crime Branch dossier
     └── tests/
         ├── riskEngine.test.js      ← 21 unit tests for risk scoring rules
-        └── api.test.js             ← 14 integration tests for controllers
+        └── api.test.js             ← 20 integration tests for controllers & report
 ```
 
 ---
@@ -128,6 +134,7 @@ Base URL: `http://localhost:3000`
 | `POST` | `/api/profiles` | Registers a new profile | Investigation flow |
 | `GET` | `/api/profiles` | Lists profiles with latest analysis summary | Internal API |
 | `GET` | `/api/profiles/:id` | Returns single profile by UUID | Detail view |
+| `GET` | `/api/profiles/:id/report` | Generates official Crime Branch forensic investigation dossier | Law enforcement export |
 | `POST` | `/api/profiles/:id/analyze` | Triggers risk engine on profile, persists analysis | Analyst manual trigger |
 | `GET` | `/api/profiles/:id/analyses`| Retrieves historical analysis runs for a profile | Audit history |
 | `GET` | `/api/analyses/:id` | Fetches single analysis record by ID | Deep inspection |
@@ -182,16 +189,15 @@ animateMetricNumber('statSystemAccuracy', stats.systemAccuracy);
 
 ---
 
-## 7. Guide for Member 3's AI (Database & Prisma Setup)
+## 7. Guide for Member 3's AI (Database & Prisma 7 Setup)
 
 Member 1 has implemented an automatic DB adapter in `server/src/lib/prisma.js`. You do **NOT** need to edit backend controller code.
 
-### Step 1: Initialize Prisma in `server/`
+### Step 1: Install Prisma 7 & Driver Adapter in `server/`
 ```bash
 cd server
-npm install @prisma/client
-npm install -D prisma
-npx prisma init
+npm install @prisma/client @prisma/adapter-pg pg dotenv
+npm install -D prisma @prisma/config
 ```
 
 ### Step 2: Copy-Paste the Ready Schema into `server/prisma/schema.prisma`
@@ -202,7 +208,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Profile {
@@ -236,6 +241,21 @@ model Analysis {
 
   @@index([profileId])
 }
+```
+
+### Step 3: Configure `server/prisma.config.js`
+In Prisma 7, CLI and migration URLs are configured in `prisma.config.js`:
+```javascript
+const { defineConfig, env } = require('@prisma/config');
+require('dotenv').config();
+
+module.exports = defineConfig({
+  schema: 'prisma/schema.prisma',
+  datasource: {
+    url: env('DATABASE_URL'),
+  },
+});
+```
 ```
 
 ### Step 3: Configure Database & Migrate

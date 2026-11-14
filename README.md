@@ -4,9 +4,9 @@ An enterprise-grade cybersecurity investigation interface and forensics intellig
 
 [![Node.js Version](https://img.shields.io/badge/Node.js-v20%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express 5](https://img.shields.io/badge/Express-v5.0-000000?logo=express&logoColor=white)](https://expressjs.com/)
-[![Prisma ORM](https://img.shields.io/badge/Prisma-v6-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Prisma ORM](https://img.shields.io/badge/Prisma-v7-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Tests](https://img.shields.io/badge/Tests-40%2F40%20Passing-success)](file:///Users/sehrawatritik2007mac.com/Downloads/asd_major_project/server/tests)
+[![Tests](https://img.shields.io/badge/Tests-41%2F41%20Passing-success)](file:///Users/sehrawatritik2007mac.com/Downloads/asd_major_project/server/tests)
 
 ---
 
@@ -164,7 +164,7 @@ erDiagram
 |-------|--------------|
 | **Frontend UI** | HTML5 Semantic Architecture, Custom Cyber CSS3 Design System, Pure Vanilla JavaScript (ES6+), Lucide Icons |
 | **Backend API** | Node.js (v20+), Express 5, CORS, Dotenv, Built-in `node:test` Runner |
-| **ORM & Database** | Prisma ORM v6 (`@prisma/client`), PostgreSQL 16+ |
+| **ORM & Database** | Prisma ORM v7 (`@prisma/client`, `@prisma/adapter-pg`, `@prisma/config`), PostgreSQL 16+ |
 | **Architecture** | Deterministic Pure-Function Risk Scoring, Cascade Foreign Keys, Auto-Switching In-Memory Fallback |
 
 ---
@@ -196,30 +196,30 @@ Fake-Profile-Analyser_/
     ├── BACKEND.md                  # Comprehensive API documentation
     ├── package.json                # Project dependencies, scripts & engines
     ├── .env.example                # Template for PORT and DATABASE_URL
+    ├── prisma.config.js            # Prisma 7 CLI & migration configuration
     ├── docs/
-    │   └── DATABASE.md             # In-depth PostgreSQL & Prisma architectural guide
+    │   └── DATABASE.md             # In-depth PostgreSQL & Prisma 7 architectural guide
     ├── prisma/
     │   ├── schema.prisma           # Prisma data models (Profile & Analysis)
     │   └── migrations/             # Applied PostgreSQL migration files
     ├── scripts/
-    │   ├── seed.js                 # HTTP API-based seed script
-    │   ├── seed-prisma.js          # Direct Prisma ORM seed script
+    │   ├── seed.js                 # Unified master seeder (Prisma ORM & in-memory)
     │   └── verify-db.js            # Database health & diagnostic reporter
     ├── src/
     │   ├── server.js               # Entry point with graceful shutdown handling
     │   ├── app.js                  # Express application factory & middleware
-    │   ├── routes/                 # REST endpoints (health, profiles, scan, stats)
+    │   ├── routes/                 # REST endpoints (health, profiles, scan, stats, report)
     │   ├── controllers/            # Request handlers and response mapping
     │   ├── services/
     │   │   └── riskEngine.js       # Pure-function 10-rule threat scoring engine
     │   ├── middleware/             # Schema validation and global error handler
     │   ├── lib/
-    │   │   ├── prisma.js           # Auto-switching PostgreSQL/inMemory adapter
+    │   │   ├── prisma.js           # Auto-switching PostgreSQL (Prisma 7 adapter) / inMemory
     │   │   └── inMemoryStore.js    # Zero-config development fallback store
     │   └── utils/
-    │       └── formatters.js       # Transforms DB records to frontend dashboard shape
+    │       └── formatters.js       # Transforms DB records to dashboard shape & Crime Branch dossier
     └── tests/
-        ├── api.test.js             # Integration tests for REST endpoints
+        ├── api.test.js             # Integration tests for REST endpoints & reports
         ├── prisma.test.js          # Prisma ORM CRUD & cascade integration tests
         └── riskEngine.test.js      # 21 unit tests for forensic risk engine
 ```
@@ -311,7 +311,7 @@ Inside `server/`:
 | `npm run db:reset` | Resets PostgreSQL schema and runs fresh migrations and seeds |
 | `npm run prisma:studio` | Launches visual Prisma Studio GUI on `http://localhost:5555` |
 | `npm run prisma:migrate` | Runs pending migrations in development |
-| `npm test` | Runs complete 40-test integration and unit test suite |
+| `npm test` | Runs complete 41-test integration and unit test suite |
 
 ---
 

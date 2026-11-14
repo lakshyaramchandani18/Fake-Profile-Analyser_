@@ -26,8 +26,10 @@ REST API for the Fake Social Media Profile Detection System.
 server/
 ├── package.json              npm project + scripts
 ├── .env.example              copy to .env, fill DATABASE_URL
+├── prisma.config.js          Prisma 7 CLI & migration configuration
 ├── scripts/
-│   └── seed.js               populate test data (run after server starts)
+│   ├── seed.js               unified master seeder (Prisma ORM + in-memory fallback)
+│   └── verify-db.js          database connectivity & latency diagnostic
 ├── src/
 │   ├── server.js             entry point — binds port, loads .env
 │   ├── app.js                Express factory (middleware + routes)
@@ -111,6 +113,9 @@ GET /api/profiles/dashboard
 GET /api/profiles/:id
 → 200 { profile } | 404
 
+GET /api/profiles/:id/report
+→ 200 { report: <Crime Branch official forensic investigation dossier> } | 404
+
 POST /api/profiles/:id/analyze
 → 201 { analysis, investigation }
 
@@ -181,20 +186,19 @@ that map to the existing `dashboard.js` DOM element IDs:
 
 ---
 
-## Switching from In-Memory → Real Database (Prisma + PostgreSQL)
+## Switching from In-Memory → Real Database (Prisma 7 + PostgreSQL)
 
 `src/lib/prisma.js` automatically detects if `DATABASE_URL` is set:
-- When `DATABASE_URL` is configured in `.env` and `@prisma/client` is installed, it connects to PostgreSQL.
+- When `DATABASE_URL` is configured in `.env` and `@prisma/client` is installed, it connects to PostgreSQL via `@prisma/adapter-pg`.
 - Otherwise, it smoothly falls back to the in-memory store.
 
-### Guide for Member 3 (Database Setup):
+### Guide for Member 3 (Database Setup with Prisma 7):
 
-1. **Install Prisma in `server/`:**
+1. **Install Prisma 7 & Driver Adapter in `server/`:**
    ```bash
    cd server
-   npm install @prisma/client
-   npm install -D prisma
-   npx prisma init
+   npm install @prisma/client @prisma/adapter-pg pg dotenv
+   npm install -D prisma @prisma/config
    ```
 2. **Add the models to `server/prisma/schema.prisma`:**
    ```prisma
@@ -204,7 +208,6 @@ that map to the existing `dashboard.js` DOM element IDs:
 
    datasource db {
      provider = "postgresql"
-     url      = env("DATABASE_URL")
    }
 
    model Profile {
@@ -235,12 +238,24 @@ that map to the existing `dashboard.js` DOM element IDs:
      createdAt      DateTime @default(now())
    }
    ```
-3. **Run migration & generate client:**
+3. **Configure `server/prisma.config.js`:**
+   ```javascript
+   const { defineConfig, env } = require('@prisma/config');
+   require('dotenv').config();
+
+   module.exports = defineConfig({
+     schema: 'prisma/schema.prisma',
+     datasource: {
+       url: env('DATABASE_URL'),
+     },
+   });
+   ```
+4. **Run migration & generate client:**
    ```bash
    npx prisma migrate dev --name init
    npx prisma generate
    ```
-4. **Done:** The backend controllers (`profileController`, `analysisController`, `scanController`) will automatically use the real PostgreSQL database without modifying any backend code!
+5. **Done:** The backend controllers (`profileController`, `analysisController`, `scanController`) will automatically use the real PostgreSQL database without modifying any backend code!
 
 ---
 
@@ -249,7 +264,7 @@ that map to the existing `dashboard.js` DOM element IDs:
 ```bash
 cd server
 npm test
-# 35/35 passing (21 unit tests for risk engine + 14 controller integration tests)
+# 41/41 passing (21 unit tests for risk engine + 15 controller integration tests + 5 Prisma model integration tests)
 ```
 
 ---
