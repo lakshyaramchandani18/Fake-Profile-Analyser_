@@ -135,6 +135,22 @@ describe("profileController integration", () => {
     assert.ok(inv.status);
   });
 
+  it("GET /api/profiles/:id/report - returns Crime Branch forensic report", async () => {
+    const createRes = mockRes();
+    await profileCtrl.create(mockReq({ body: SAMPLE_PROFILE }), createRes, mockNext);
+    const profileId = createRes._body.profile.id;
+
+    const res = mockRes();
+    await profileCtrl.getReport(mockReq({ params: { id: profileId } }), res, mockNext);
+
+    assert.equal(res._status, 200);
+    assert.ok(res._body.report);
+    assert.ok(res._body.report.dossierReference.startsWith("DOSSIER-INV-"));
+    assert.equal(res._body.report.subjectEntity.handle, "@shadow_bot99");
+    assert.ok(res._body.report.forensicDetermination);
+    assert.ok(res._body.report.chainOfCustody.hashVerification);
+  });
+
   it("inMemoryStore findFirst - finds profile by matching fields", async () => {
     await profileCtrl.create(mockReq({ body: SAMPLE_PROFILE }), mockRes(), mockNext);
     const found = await store.profile.findFirst({

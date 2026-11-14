@@ -22,6 +22,7 @@ router.post('/',             validateProfile, profileController.create);
 router.get('/',                               profileController.list);
 router.get('/dashboard',                      profileController.dashboard); // frontend shape
 router.get('/:id',                            profileController.getOne);
+router.get('/:id/report',                     profileController.getReport); // Crime Branch dossier report
 
 // Analysis sub-resource
 router.post('/:id/analyze',  analysisController.analyze);

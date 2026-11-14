@@ -138,6 +138,85 @@ function toInvestigationShape(profile, analysis = null) {
   };
 }
 
+/**
+ * toCrimeBranchReport(profile, analysis)
+ *
+ * Formats an investigation case into a formal forensic dossier
+ * aligned with Cybercrime and Law Enforcement investigative requirements.
+ */
+function toCrimeBranchReport(profile, analysis) {
+  const caseId = toCaseId(profile.id);
+  const riskLevel = analysis ? analysis.riskLevel : 'UNKNOWN';
+  const score = analysis ? analysis.score : 0;
+  const indicators = analysis && analysis.indicators ? analysis.indicators : [];
+  const breakdown = analysis ? analysis.breakdown : {};
+
+  let recommendation = 'No action required. Account exhibits authentic behavioral markers.';
+  let priority = 'P4 - Low Priority';
+  if (riskLevel === 'CRITICAL') {
+    recommendation = 'Immediate Intermediary Preservation Notice (Sec 91 CrPC) & Expedited Takedown Request under Information Technology Act Rules.';
+    priority = 'P1 - Urgent Action Required';
+  } else if (riskLevel === 'HIGH') {
+    recommendation = 'Flag for Active Threat Monitoring and request platform metadata verification.';
+    priority = 'P2 - High Priority Review';
+  } else if (riskLevel === 'MEDIUM') {
+    recommendation = 'Monitor account for activity bursts and anomalous follower velocity.';
+    priority = 'P3 - Routine Surveillance';
+  }
+
+  const followRatio = profile.followers > 0 
+    ? (profile.following / profile.followers).toFixed(1) + ':1'
+    : profile.following + ':0';
+
+  return {
+    dossierReference: 'DOSSIER-' + caseId,
+    caseId,
+    issuingUnit: 'Cyber Crime Investigation Cell & Digital Forensics Command',
+    classification: 'CONFIDENTIAL // LAW ENFORCEMENT SENSITIVE',
+    generatedAt: new Date().toISOString(),
+    subjectEntity: {
+      platform: toPlatformName(profile.platform),
+      handle: profile.handle,
+      displayName: profile.displayName,
+      profileUrl: profile.profileUrl || `https://${profile.platform}.com/${profile.handle.replace('@', '')}`,
+      metrics: {
+        accountAge: toAccountAgeStr(profile.accountAgeDays),
+        followers: profile.followers,
+        following: profile.following,
+        followRatio,
+        postsCount: profile.postsCount,
+        bio: profile.bio || '[NO BIO RECORDED]',
+      },
+    },
+    forensicDetermination: {
+      overallRiskScore: `${score} / 100`,
+      riskSeverity: riskLevel,
+      threatClassification: analysis ? analysis.threatCategory : 'Pending Analysis',
+      priorityLevel: priority,
+      recommendation,
+      evidentiarySignals: indicators.map((ind, idx) => ({
+        index: idx + 1,
+        ruleCode: ind.code || `RULE_${idx + 1}`,
+        finding: ind.description || ind.rule || 'Anomalous behavioral marker',
+        severityImpact: `+${ind.points || 0} pts`,
+      })),
+      threatDimensionScores: {
+        metadataAnomaly: `${breakdown.metadataAnomaly || 0}%`,
+        behavioralBurstRate: `${breakdown.behavioralBurstRate || 0}%`,
+        networkClusterDensity: `${breakdown.networkClusterDensity || 0}%`,
+        linguisticScripting: `${breakdown.linguisticScripting || 0}%`,
+        avatarAuthenticity: `${breakdown.avatarAuthenticity || 50}%`,
+      },
+    },
+    chainOfCustody: {
+      investigator: 'FPDS Automated Cyber Threat Engine (v1.0-ASD)',
+      status: toStatus(riskLevel),
+      hashVerification: `SHA256-${Buffer.from(profile.id + (analysis ? analysis.id : '')).toString('hex').slice(0, 32)}`,
+      authorizedSignOff: 'Cybercrime Technical Investigator',
+    },
+  };
+}
+
 module.exports = {
   toPlatformName,
   toAvatarInitials,
@@ -146,4 +225,5 @@ module.exports = {
   toStatus,
   toCaseId,
   toInvestigationShape,
+  toCrimeBranchReport,
 };

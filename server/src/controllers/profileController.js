@@ -7,7 +7,7 @@
  */
 
 const db = require('../lib/prisma');
-const { toInvestigationShape } = require('../utils/formatters');
+const { toInvestigationShape, toCrimeBranchReport } = require('../utils/formatters');
 
 /**
  * POST /api/profiles
@@ -101,4 +101,31 @@ async function getOne(req, res, next) {
   }
 }
 
-module.exports = { create, list, dashboard, getOne };
+/**
+ * GET /api/profiles/:id/report
+ * Returns an official Crime Branch Forensic Investigation Report.
+ */
+async function getReport(req, res, next) {
+  try {
+    const profile = await db.profile.findUnique({
+      where: { id: req.params.id },
+      include: {
+        analyses: {
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+        },
+      },
+    });
+
+    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+
+    const analysis = (profile.analyses && profile.analyses[0]) || null;
+    const report = toCrimeBranchReport(profile, analysis);
+
+    return res.json({ report });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { create, list, dashboard, getOne, getReport };
