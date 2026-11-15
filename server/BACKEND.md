@@ -64,14 +64,12 @@ server/
 
 ```bash
 cd server
-cp .env.example .env        # first time only
-node src/server.js          # start on :3000
-# or
-node --watch src/server.js  # auto-reload on save
-
-# seed test data (server must be running)
-node scripts/seed.js
+cp .env.example .env        # first time only (optional)
+npm run seed                # seed 5 forensic investigation profiles
+npm run dev                 # start server with live-reload on :3000
 ```
+
+Express serves both the backend REST API (`/api/...`) and the frontend client (`client/`) directly on **`http://localhost:3000`**.
 
 ---
 

@@ -254,13 +254,13 @@ cd server
 npm install
 ```
 
-Create your `.env` configuration:
+Create your `.env` configuration (optional for PostgreSQL; by default, FPDS runs out-of-the-box using the zero-config in-memory database):
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` to point to your PostgreSQL database:
+If connecting real PostgreSQL, edit `server/.env`:
 
 ```env
 PORT=3000
@@ -268,46 +268,35 @@ DATABASE_URL="postgresql://username:password@localhost:5432/fpds_db?schema=publi
 NODE_ENV=development
 ```
 
-Run database migrations to generate tables:
-
-```bash
-npx prisma migrate dev --name init
-```
-
-Verify that the database connection is live:
-
-```bash
-npm run db:verify
-```
+*(If using in-memory mode, simply keep `DATABASE_URL` commented out).*
 
 Seed the database with sample forensic telemetry:
 
 ```bash
-npm run db:seed
-```
-
-Start the backend API server:
-
-```bash
-npm run dev
-# Server boots on http://localhost:3000
+npm run seed
 ```
 
 ---
 
-### 3. Launch Frontend SOC Dashboard
+### 3. Launch Application (Unified Single-Port Mode)
 
-In a separate terminal, serve the `client/` directory with any static HTTP server:
+Start the full-stack server from `server/`:
 
 ```bash
-cd client
-python3 -m http.server 8080
+npm run dev
+# Full application boots on http://localhost:3000
 ```
 
-Open your browser:
-- **SOC Command Center Dashboard**: [http://localhost:8080/dashboard.html](http://localhost:8080/dashboard.html)
-- **Portal Landing Page**: [http://localhost:8080/index.html](http://localhost:8080/index.html)
+Express serves both the backend API and the entire frontend application together on **port 3000**:
+- **Portal Landing Page**: [http://localhost:3000](http://localhost:3000) (or `/index.html`)
+- **SOC Forensics Dashboard**: [http://localhost:3000/dashboard.html](http://localhost:3000/dashboard.html)
+- **New Profile Investigation**: [http://localhost:3000/investigation.html](http://localhost:3000/investigation.html)
+- **Threat Analysis Inspector**: [http://localhost:3000/analysis.html](http://localhost:3000/analysis.html)
+- **Case Audit History**: [http://localhost:3000/history.html](http://localhost:3000/history.html)
+- **Forensic Dossier Reports**: [http://localhost:3000/reports.html](http://localhost:3000/reports.html)
 - **Backend API Health Check**: [http://localhost:3000/health](http://localhost:3000/health)
+
+*(Optional: You can also serve `client/` separately with `python3 -m http.server 8080` or VS Code Live Server — CORS and API auto-routing support external dev servers seamlessly).*
 
 ---
 

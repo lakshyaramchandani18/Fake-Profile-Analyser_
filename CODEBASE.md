@@ -47,11 +47,14 @@ An investigation support tool that allows a forensic analyst to inspect social m
 - **Integration Test Suite (`tests/api.test.js`):** Added 14 controller integration tests covering profile CRUD, analysis flows, 404 handling, and quick scans. Total test suite is **35 / 35 tests passing (100% green)**.
 - **Documentation & Prisma Specification:** Documented ready-to-use Prisma models for Member 3.
 
-### Day 4 & 5 (Nov 13–14) — Member 3 Database Integration & Forensic Reporting
+### Day 4 & 5 (Nov 13–15) — Member 3 Database Integration & System Unification
 - **PostgreSQL & Prisma 7 Architecture:** Provisioned Prisma 7 ORM with PostgreSQL datasource, UUID primary keys, and cascade foreign key constraints. Migrated connection URLs to modern `prisma.config.js` with `@prisma/adapter-pg` driver adapter.
 - **Database Migration:** Generated and applied migration `20261113113409_init` creating live `Profile`, `Analysis`, and `_prisma_migrations` tables.
 - **Crime Branch Forensic Dossier:** Implemented formal law-enforcement report generator (`toCrimeBranchReport`) and endpoint `GET /api/profiles/:id/report` providing full case metadata, threat classification, and hash-verified chain-of-custody.
 - **Unified Master Seeder:** Built unified seeder in `scripts/seed.js` with automatic mode switching between PostgreSQL (via Prisma ORM) and in-memory store fallback.
+- **Single-Port Unified Mode:** Configured Express in `server/src/app.js` to statically serve `client/` directly on `http://localhost:3000`, allowing both frontend and backend to run simultaneously from a single command (`npm run dev`).
+- **Full-Stack Live Connection:** Connected multi-page frontend (`client/js/api.js`) directly to live backend REST API with automatic fallback to client mock store if offline.
+- **Audit History & Filter Optimization:** Fixed case-sensitivity bug in `history.js` and `reports.js`, ensuring all historical records display on landing.
 - **Lifecycle & Health Heartbeat:** Added graceful Prisma disconnection handling on SIGINT/SIGTERM, and extended `/health` endpoint to query PostgreSQL and measure query latency.
 - **Test Suite Expansion:** Expanded test suite with controller integration tests for the report endpoint and Prisma adapter tests. Test suite is **41 / 41 passing tests (100% green)**.
 - **Documentation & Diagrams:** Authored `server/docs/DATABASE.md` and overhauled `README.md` with complete Mermaid system architecture, sequence flows, and ER diagrams.
