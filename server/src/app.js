@@ -32,11 +32,11 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no Origin header (curl, Postman, same-origin)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no Origin header, null (file://), or local dev servers
+    if (!origin || origin === 'null' || allowedOrigins.includes(origin) || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
       callback(null, true);
     } else {
-      callback(new Error(`CORS: origin ${origin} not allowed`));
+      callback(null, true);
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

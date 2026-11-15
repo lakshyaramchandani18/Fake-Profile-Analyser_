@@ -180,17 +180,28 @@ Fake-Profile-Analyser_/
 ├── client/                         # FRONTEND SOC APPLICATION
 │   ├── index.html                  # University ASD portal overview & quick scan launcher
 │   ├── dashboard.html              # SOC Forensics Command Center
+│   ├── analysis.html               # Multi-factor threat breakdown inspector
+│   ├── investigation.html          # Active profile investigation workspace
+│   ├── history.html                # Historical investigation logs & audit trail
+│   ├── reports.html                # Crime Branch forensic dossier generator
+│   ├── methodology.html            # 10-rule detection methodology & rubric
 │   ├── favicon.svg                 # Application cybersecurity badge icon
 │   ├── css/                        # Design tokens, cyber components, responsive grid
 │   │   ├── style.css
 │   │   ├── components.css
-│   │   └── dashboard.css
-│   ├── js/                         # Client controllers and telemetry
-│   │   ├── app.js                  # Icon initialization, heartbeat ping, toasts
-│   │   ├── navigation.js           # Responsive sidebar drawer, modal triggers
-│   │   ├── dashboard.js            # KPI animations, filterable table & inspector
-│   │   └── mock-data.js            # Initial dataset fallback
-│   └── assets/images/              # Vector assets and badge imagery
+│   │   ├── dashboard.css
+│   │   └── responsive.css
+│   └── js/                         # Client controllers, API client & telemetry
+│       ├── api.js                  # Centralized API integration client
+│       ├── mock-data.js            # Initial dataset fallback
+│       ├── app.js                  # Icon initialization, heartbeat ping, toasts
+│       ├── navigation.js           # Responsive sidebar drawer, modal triggers
+│       ├── dashboard.js            # KPI animations, filterable table & inspector
+│       ├── analysis.js             # Risk analysis visualization controller
+│       ├── investigation.js        # Case management controller
+│       ├── history.js              # Audit logs controller
+│       ├── reports.js              # PDF / Crime Branch dossier export
+│       └── methodology.js          # Interactive forensic rubric controller
 │
 └── server/                         # BACKEND API & PERSISTENCE
     ├── BACKEND.md                  # Comprehensive API documentation

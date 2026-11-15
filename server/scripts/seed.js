@@ -125,7 +125,15 @@ async function seed() {
 
 seed()
   .catch((err) => {
-    console.error('[FPDS Seed] Error during seeding:', err);
+    if (err.code === 'P1000') {
+      console.error('\n❌ [FPDS Seed] PostgreSQL Authentication Failed (P1000)');
+      console.error('The credentials in DATABASE_URL are placeholder defaults (user:password).');
+      console.error('\n👉 How to resolve:');
+      console.error('  • Option A (In-Memory Fallback): Comment out DATABASE_URL in .env (# DATABASE_URL=...)');
+      console.error('  • Option B (Real PostgreSQL): Update DATABASE_URL in .env with your actual username/password.\n');
+    } else {
+      console.error('[FPDS Seed] Error during seeding:', err);
+    }
     process.exit(1);
   })
   .finally(async () => {

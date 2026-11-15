@@ -20,10 +20,10 @@ An investigation support tool that allows a forensic analyst to inspect social m
 ## 2. Team Boundaries & Ownership
 
 | Member | Domain & Responsibilities | Working Branch | Status |
-|--------|---------------------------|----------------|--------|
+|---|---|---|---|
 | **Member 1** | Express API, 10-rule risk engine, input validation, in-memory DB fallback, integration tests, API formatters | `feature/backend` | **100% Done (Merged)** |
-| **Member 2** | Client UI, SOC dashboard, wiring frontend `fetch()` calls to backend endpoints | `feature/frontend` | In Progress (Mock UI complete) |
-| **Member 3 (Current)** | PostgreSQL database setup, Prisma schema, migrations, DB seed & verification, ER docs | `feature/database` | **100% Done (Ready for PR)** |
+| **Member 2** | Client UI, SOC dashboard, multi-page application, interactive Chart.js telemetry | `feature/frontend` | **100% Done (Merged)** |
+| **Member 3** | PostgreSQL database setup, Prisma 7 schema & config, migrations, seed & verification, ER docs | `feature/database` | **100% Done (Merged)** |
 
 ### Branch Policy
 - **Never push directly to `main`**. All work must be developed on a feature branch (`feature/backend`, `feature/frontend`, etc.) and merged via GitHub Pull Request.
@@ -67,17 +67,29 @@ Fake-Profile-Analyser_/
 ├── .gitignore                      ← Ignores node_modules, .env, *.log, context.md
 │
 ├── client/                         ← FRONTEND (Owned by Member 2)
-│   ├── index.html                  ← Landing portal
+│   ├── index.html                  ← Landing portal overview & launcher
 │   ├── dashboard.html              ← SOC analyst dashboard (primary UI)
-│   ├── css/                        ← Design system tokens, components, grid
+│   ├── analysis.html               ← In-depth profile analysis view
+│   ├── investigation.html          ← Active case investigation workspace
+│   ├── history.html                ← Historical audit logs & past scans
+│   ├── reports.html                ← Crime Branch forensic report generator
+│   ├── methodology.html            ← Forensic detection framework breakdown
+│   ├── css/                        ← Design system tokens, components, grid, responsive
 │   │   ├── style.css
 │   │   ├── components.css
-│   │   └── dashboard.css
+│   │   ├── dashboard.css
+│   │   └── responsive.css
 │   └── js/
-│       ├── mock-data.js            ← Static data (to be replaced by API calls)
+│       ├── api.js                  ← Centralized API integration client
+│       ├── mock-data.js            ← Fallback realistic dataset
 │       ├── app.js                  ← App shell, toast notifications, search
 │       ├── navigation.js           ← Sidebar navigation, modal toggles
-│       └── dashboard.js            ← Investigations table, KPI cards, inspector
+│       ├── dashboard.js            ← Investigations table, KPI cards, charts
+│       ├── analysis.js             ← Risk analysis page controller
+│       ├── investigation.js        ← Investigation page controller
+│       ├── history.js              ← History page controller
+│       ├── reports.js              ← Forensic report export controller
+│       └── methodology.js          ← Methodology visualization controller
 │
 └── server/                         ← BACKEND (Owned by Member 1)
     ├── BACKEND.md                  ← Detailed API specification & guide
