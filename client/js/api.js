@@ -4,7 +4,7 @@
  * Pre-configured for future Express / PostgreSQL Backend Connection
  */
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 // Toggle between Backend API and Local Mock Engine (Defaults to mock mode for frontend phase)
 const USE_MOCK_FALLBACK = true;
