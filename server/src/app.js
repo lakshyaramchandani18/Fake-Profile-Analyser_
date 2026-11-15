@@ -9,6 +9,7 @@
 
 const express = require('express');
 const cors    = require('cors');
+const path    = require('path');
 
 const healthRouter   = require('./routes/health');
 const profileRouter  = require('./routes/profiles');
@@ -45,6 +46,10 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// ── Serve Frontend Client (Single-port Unified Mode) ──────────────────────────
+const clientPath = path.join(__dirname, '../../client');
+app.use(express.static(clientPath));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 

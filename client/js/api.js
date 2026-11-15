@@ -4,7 +4,9 @@
  * Connects frontend UI to Express 5 & PostgreSQL / InMemory Backend
  */
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = (typeof window !== 'undefined' && window.location.port === '3000') 
+  ? '/api' 
+  : 'http://localhost:3000/api';
 
 // Toggle between Backend API (false = Live Connected Mode) and Mock-Only Mode
 const USE_MOCK_FALLBACK = false;
@@ -292,12 +294,15 @@ const FPDS_API = {
         reportId: `REP-2026-${String(idx + 1).padStart(3, '0')}`,
         caseId: p.id,
         targetHandle: `@${p.username}`,
+        username: p.username,
         platform: p.platform,
         riskLevel: p.riskLevel,
+        riskScore: p.riskScore,
         score: p.riskScore,
         generatedDate: p.investigationDate,
         investigator: 'Cyber Crime Investigation Cell & Digital Forensics Command',
-        status: 'Archived Dossier'
+        summary: `Automated forensic intake for @${p.username} on ${p.platform}. Risk score: ${p.riskScore}/100 [${p.riskLevel}]. Chain-of-custody recorded.`,
+        status: 'Generated'
       }));
     }
 

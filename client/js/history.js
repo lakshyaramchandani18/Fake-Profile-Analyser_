@@ -10,7 +10,7 @@
   let allInvestigations = [];
   let searchQuery = '';
   let platformFilter = 'all';
-  let riskFilter = 'all';
+  let riskFilter = 'ALL';
   let sortBy = 'date-desc';
 
   async function initHistory() {
@@ -58,7 +58,7 @@
       resetFiltersBtn.addEventListener('click', () => {
         searchQuery = '';
         platformFilter = 'all';
-        riskFilter = 'all';
+        riskFilter = 'ALL';
         sortBy = 'date-desc';
 
         if (searchInput) searchInput.value = '';
@@ -81,18 +81,18 @@
     let filtered = allInvestigations.filter(item => {
       // 1. Search Query (username or ID)
       if (searchQuery) {
-        const matchUser = item.username.toLowerCase().includes(searchQuery);
-        const matchId = item.id.toLowerCase().includes(searchQuery);
+        const matchUser = (item.username || '').toLowerCase().includes(searchQuery);
+        const matchId = (item.id || '').toLowerCase().includes(searchQuery);
         if (!matchUser && !matchId) return false;
       }
 
       // 2. Platform Filter
-      if (platformFilter !== 'all' && item.platform.toLowerCase() !== platformFilter) {
+      if (platformFilter.toLowerCase() !== 'all' && (item.platform || '').toLowerCase() !== platformFilter.toLowerCase()) {
         return false;
       }
 
       // 3. Risk Level Filter
-      if (riskFilter !== 'ALL' && item.riskLevel.toUpperCase() !== riskFilter) {
+      if (riskFilter.toUpperCase() !== 'ALL' && (item.riskLevel || '').toUpperCase() !== riskFilter.toUpperCase()) {
         return false;
       }
 

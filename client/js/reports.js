@@ -9,7 +9,7 @@
 
   let allReports = [];
   let searchQuery = '';
-  let riskFilter = 'all';
+  let riskFilter = 'ALL';
 
   async function initReports() {
     allReports = await window.FPDS_API.getReports();
@@ -50,11 +50,11 @@
 
     const filtered = allReports.filter(rep => {
       if (searchQuery) {
-        const matchUser = rep.username.toLowerCase().includes(searchQuery);
-        const matchId = rep.reportId.toLowerCase().includes(searchQuery);
+        const matchUser = (rep.username || '').toLowerCase().includes(searchQuery);
+        const matchId = (rep.reportId || '').toLowerCase().includes(searchQuery);
         if (!matchUser && !matchId) return false;
       }
-      if (riskFilter !== 'ALL' && rep.riskLevel.toUpperCase() !== riskFilter) {
+      if (riskFilter.toUpperCase() !== 'ALL' && (rep.riskLevel || '').toUpperCase() !== riskFilter.toUpperCase()) {
         return false;
       }
       return true;
