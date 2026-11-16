@@ -2,9 +2,7 @@
 
 /**
  * FPDS — Express Application Factory
- * Member 1: sets up middleware, routes, and error handling.
- * Does NOT call app.listen() — that lives in server.js so this
- * module can be imported cleanly in tests.
+ * Sets up middleware, routes, static client hosting, and error handling.
  */
 
 const express = require('express');
@@ -22,7 +20,7 @@ const app = express();
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 
-// Allow the frontend dev server (python http.server on :8080) to call our API.
+// Allow the frontend dev server to call our API.
 // In production this origin list should come from an env variable.
 const allowedOrigins = [
   'http://localhost:8080',

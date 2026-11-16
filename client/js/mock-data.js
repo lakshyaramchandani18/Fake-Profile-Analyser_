@@ -216,7 +216,7 @@ const FPDS_MOCK_DATA = {
 };
 
 /**
- * Rule-based Scoring Engine (Strict Section 11 Methodology)
+ * Rule-based Scoring Engine (Forensic Scoring Methodology)
  * Computes risk score and breakdown indicators
  */
 function calculateProfileRisk(profile) {
@@ -368,7 +368,7 @@ function calculateProfileRisk(profile) {
   // Cap at 100
   score = Math.min(100, score);
 
-  // Classification (Strict Section 11)
+  // Classification
   let level = "LOW";
   let badgeColor = "#22C55E";
   if (score >= 75) {

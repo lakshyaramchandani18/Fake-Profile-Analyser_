@@ -106,9 +106,12 @@
     }
 
     container.innerHTML = indicators.map(ind => {
-      const isFlagged = ind.status === 'FLAGGED';
+      const isFlagged = (ind.status || 'FLAGGED') === 'FLAGGED';
       const badgeClass = isFlagged ? 'critical' : 'cleared';
       const iconName = isFlagged ? 'alert-triangle' : 'check-circle-2';
+      const name = ind.name || (ind.code ? ind.code.replace(/_/g, ' ') : (ind.rule || 'Behavioral Marker'));
+      const explanation = ind.explanation || ind.description || 'Anomalous signal triggered by rule engine.';
+      const points = ind.points !== undefined ? ind.points : 15;
 
       return `
         <div class="evidence-card ${isFlagged ? 'flagged' : 'clean'}">
@@ -117,14 +120,14 @@
               <span class="evidence-icon-wrap ${isFlagged ? 'flagged' : 'clean'}">
                 <i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>
               </span>
-              <h4 class="evidence-name">${window.FPDS_APP.escapeHTML(ind.name)}</h4>
+              <h4 class="evidence-name">${window.FPDS_APP.escapeHTML(name)}</h4>
             </div>
             <div class="evidence-badges-row">
-              <span class="points-badge ${isFlagged ? 'flagged' : 'clean'}">${ind.points} Pts</span>
-              <span class="risk-badge ${badgeClass}">${ind.status}</span>
+              <span class="points-badge ${isFlagged ? 'flagged' : 'clean'}">+${points} Pts</span>
+              <span class="risk-badge ${badgeClass}">${isFlagged ? 'FLAGGED' : 'CLEARED'}</span>
             </div>
           </div>
-          <p class="evidence-explanation">${window.FPDS_APP.escapeHTML(ind.explanation)}</p>
+          <p class="evidence-explanation">${window.FPDS_APP.escapeHTML(explanation)}</p>
         </div>
       `;
     }).join('');
@@ -133,30 +136,23 @@
   }
 
   /**
-   * 4. Setup Action Buttons & Generate Report Placeholder
+   * 4. Setup Action Buttons & Generate Crime Branch Forensic Report
    */
   function setupActionButtons(profile) {
     const reportBtn = document.getElementById('generateReportBtn');
-    const modal = document.getElementById('reportNoticeModal');
-    const modalCloseBtn = document.getElementById('closeReportNoticeModal');
 
     if (reportBtn) {
-      reportBtn.addEventListener('click', () => {
-        if (modal) {
-          modal.classList.add('active');
-        } else {
+      reportBtn.addEventListener('click', async () => {
+        window.FPDS_APP.showToast('Compiling Dossier', `Fetching official Crime Branch forensic report for @${profile.username}...`, 'info');
+        const targetId = profile.id || profile.username;
+        const result = await window.FPDS_API.downloadReport(targetId);
+        if (result && result.success) {
           window.FPDS_APP.showToast(
-            'Backend Integration Pending',
-            `Forensic report for @${profile.username} will be compiled once the Express PDF backend service is connected.`,
-            'warning'
+            'Dossier Exported',
+            `Official Crime Branch report for @${profile.username} downloaded successfully.`,
+            'success'
           );
         }
-      });
-    }
-
-    if (modalCloseBtn && modal) {
-      modalCloseBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
       });
     }
   }

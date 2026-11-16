@@ -62,8 +62,7 @@ async function list(req, res, next) {
 
 /**
  * GET /api/profiles/dashboard
- * Returns profiles shaped exactly like FPDS_MOCK_DATA.investigations.
- * Member 2 calls this to replace the mock data array.
+ * Returns profiles formatted for the dashboard investigations table.
  */
 async function dashboard(req, res, next) {
   try {

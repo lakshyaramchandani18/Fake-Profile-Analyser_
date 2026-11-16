@@ -7,13 +7,7 @@
  * One-shot endpoint for the dashboard Quick Scan form.
  * Accepts minimal input (handle + platform), creates the profile with
  * sensible defaults for missing fields, runs the risk engine, and returns
- * the full investigation shape ready for dashboard.js.
- *
- * Member 2 integration:
- *   const res  = await fetch('/api/scan', { method:'POST', headers:{'Content-Type':'application/json'},
- *                 body: JSON.stringify({ handle, platform }) });
- *   const { investigation } = await res.json();
- *   // investigation is drop-in compatible with FPDS_MOCK_DATA.investigations items
+ * the full investigation record.
  */
 
 const db = require('../lib/prisma');

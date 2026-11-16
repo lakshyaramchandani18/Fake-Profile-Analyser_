@@ -249,11 +249,13 @@
         <button class="btn btn-secondary" onclick="document.getElementById('reportViewModal').classList.remove('active');">
           <span>Close Preview</span>
         </button>
-        <button class="btn btn-primary" onclick="
-          window.FPDS_APP.showToast('Backend Integration Notice', 'PDF compilation requires connection to Express backend in Phase 2.', 'warning');
-        ">
+        <button class="btn btn-secondary" id="modalPrintDossierBtn">
+          <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+          <span>Print Dossier</span>
+        </button>
+        <button class="btn btn-primary" id="modalDownloadDossierBtn">
           <i data-lucide="download" style="width: 14px; height: 14px;"></i>
-          <span>Download PDF (Pending Backend)</span>
+          <span>Download Dossier</span>
         </button>
       </div>
     </div>

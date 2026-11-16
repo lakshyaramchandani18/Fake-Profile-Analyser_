@@ -4,14 +4,8 @@
  * FPDS — Database Client Adapter
  *
  * Automatically detects whether Prisma and DATABASE_URL are available:
- *   - If DATABASE_URL is set and PrismaClient is installed, uses real PostgreSQL.
- *   - Otherwise, falls back to the in-memory store for local development/testing.
- *
- * For Member 3 (Prisma setup):
- *   1. Run `npm install @prisma/client` and `npm install -D prisma` in server/
- *   2. Run `npx prisma init` (or `npx prisma migrate dev`)
- *   3. Set DATABASE_URL in server/.env
- *   4. Done — no manual edits required in controllers or routes!
+ *   - If DATABASE_URL is set and PrismaClient is configured, uses PostgreSQL via Prisma 7.
+ *   - Otherwise, falls back to the in-memory store for local zero-config execution.
  */
 
 let db;

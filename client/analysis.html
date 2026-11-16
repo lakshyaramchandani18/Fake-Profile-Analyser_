@@ -260,44 +260,6 @@
     </div>
   </div>
 
-  <!-- Modal: Generate Report Placeholder Notice (Section 8 & 10) -->
-  <div class="modal-overlay" id="reportNoticeModal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div class="modal-title">
-          <i data-lucide="file-text" style="width: 20px; height: 20px; color: var(--primary-blue);"></i>
-          <span>Forensic Report Export</span>
-        </div>
-        <button class="modal-close-btn" id="closeReportNoticeModal" aria-label="Close modal">
-          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div style="text-align: center; padding: 1rem 0;">
-          <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--color-yellow-subtle); color: var(--color-yellow); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
-            <i data-lucide="info" style="width: 26px; height: 26px;"></i>
-          </div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
-            Backend PDF Service Integration Notice
-          </h3>
-          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; max-width: 440px; margin: 0 auto 1.5rem;">
-            The frontend has successfully compiled all forensic evidence tokens and heuristic calculations for this target. Generating actual cryptographically signed PDF documents will be executed via the Express / Puppeteer backend API in Phase 2.
-          </p>
-          <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-align: left;">
-            <div>Target Endpoint: POST http://localhost:5000/api/reports/generate</div>
-            <div style="color: var(--color-green); margin-top: 0.25rem;">Frontend Payload: Ready & Verified in localStorage</div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="reports.html" class="btn btn-primary">
-          <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
-          <span>View Reports Archive</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <div id="toastContainer" class="toast-container"></div>
 
   <!-- Lucide Icons CDN -->

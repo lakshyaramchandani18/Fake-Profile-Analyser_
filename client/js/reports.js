@@ -10,6 +10,7 @@
   let allReports = [];
   let searchQuery = '';
   let riskFilter = 'ALL';
+  let activeModalCaseId = null;
 
   async function initReports() {
     allReports = await window.FPDS_API.getReports();
@@ -41,6 +42,23 @@
     if (modalCloseBtn && modal) {
       modalCloseBtn.addEventListener('click', () => modal.classList.remove('active'));
     }
+
+    // Modal Download & Print
+    const modalDownloadBtn = document.getElementById('modalDownloadDossierBtn');
+    if (modalDownloadBtn) {
+      modalDownloadBtn.addEventListener('click', () => {
+        if (activeModalCaseId) {
+          handleReportDownloadNotice(activeModalCaseId);
+        }
+      });
+    }
+
+    const modalPrintBtn = document.getElementById('modalPrintDossierBtn');
+    if (modalPrintBtn) {
+      modalPrintBtn.addEventListener('click', () => {
+        window.print();
+      });
+    }
   }
 
   function renderReportsTable() {
@@ -70,6 +88,7 @@
 
     tbody.innerHTML = filtered.map(rep => {
       const riskClass = rep.riskLevel.toLowerCase();
+      const targetCaseId = rep.caseId || rep.reportId;
       return `
         <tr>
           <td><span class="id-badge">${rep.reportId}</span></td>
@@ -93,11 +112,11 @@
           </td>
           <td style="text-align: right;">
             <div style="display: inline-flex; gap: 0.5rem;">
-              <button class="btn btn-sm btn-secondary view-report-btn" data-id="${rep.reportId}" title="Preview Forensic Dossier">
+              <button class="btn btn-sm btn-secondary view-report-btn" data-id="${rep.reportId}" data-case-id="${targetCaseId}" title="Preview Forensic Dossier">
                 <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
                 <span>View</span>
               </button>
-              <button class="btn btn-sm btn-secondary download-report-btn" data-id="${rep.reportId}" title="Download Signed PDF Dossier">
+              <button class="btn btn-sm btn-secondary download-report-btn" data-id="${rep.reportId}" data-case-id="${targetCaseId}" title="Download Signed Forensic Dossier">
                 <i data-lucide="download" style="width: 14px; height: 14px;"></i>
                 <span>Download</span>
               </button>
@@ -117,8 +136,8 @@
 
     tbody.querySelectorAll('.download-report-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const reportId = btn.getAttribute('data-id');
-        handleReportDownloadNotice(reportId);
+        const caseId = btn.getAttribute('data-case-id') || btn.getAttribute('data-id');
+        handleReportDownloadNotice(caseId);
       });
     });
 
@@ -128,6 +147,8 @@
   function openReportModal(reportId) {
     const report = allReports.find(r => r.reportId === reportId);
     if (!report) return;
+
+    activeModalCaseId = report.caseId || report.reportId;
 
     const modal = document.getElementById('reportViewModal');
     if (!modal) return;
@@ -142,13 +163,16 @@
     modal.classList.add('active');
   }
 
-  async function handleReportDownloadNotice(reportId) {
-    const result = await window.FPDS_API.downloadReport(reportId);
-    window.FPDS_APP.showToast(
-      'PDF Service Pending Backend',
-      `Report #${reportId} is ready for export. Actual PDF generation requires the Express/Puppeteer backend service to be connected.`,
-      'warning'
-    );
+  async function handleReportDownloadNotice(caseId) {
+    window.FPDS_APP.showToast('Exporting Dossier', 'Preparing signed Crime Branch forensic report...', 'info');
+    const result = await window.FPDS_API.downloadReport(caseId);
+    if (result && result.success) {
+      window.FPDS_APP.showToast(
+        'Dossier Exported',
+        'Official Crime Branch forensic dossier downloaded successfully.',
+        'success'
+      );
+    }
   }
 
   document.addEventListener('DOMContentLoaded', initReports);

@@ -2,7 +2,6 @@
 
 /**
  * FPDS — Database Verification & Health Diagnostic
- * Member 3 — Database Layer
  *
  * Verifies live PostgreSQL connectivity, runs raw sanity queries,
  * checks table states and relations, and prints a diagnostic report.

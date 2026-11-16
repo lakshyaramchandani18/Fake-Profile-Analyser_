@@ -54,8 +54,6 @@ server/
 │   │   └── inMemoryStore.js  dev fallback when Prisma not configured
 │   └── utils/
 │       └── formatters.js     maps DB records → frontend dashboard shape
-└── tests/
-    └── riskEngine.test.js    21 unit tests (node --test)
 ```
 
 ---
@@ -254,16 +252,6 @@ that map to the existing `dashboard.js` DOM element IDs:
    npx prisma generate
    ```
 5. **Done:** The backend controllers (`profileController`, `analysisController`, `scanController`) will automatically use the real PostgreSQL database without modifying any backend code!
-
----
-
-## Tests
-
-```bash
-cd server
-npm test
-# 41/41 passing (21 unit tests for risk engine + 15 controller integration tests + 5 Prisma model integration tests)
-```
 
 ---
 

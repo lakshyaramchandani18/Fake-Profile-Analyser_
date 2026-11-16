@@ -21,7 +21,7 @@ An investigation support tool that allows a forensic analyst to inspect social m
 
 | Member | Domain & Responsibilities | Working Branch | Status |
 |---|---|---|---|
-| **Member 1** | Express API, 10-rule risk engine, input validation, in-memory DB fallback, integration tests, API formatters | `feature/backend` | **100% Done (Merged)** |
+| **Member 1** | Express API, 10-rule risk engine, input validation, in-memory DB fallback, API formatters | `feature/backend` | **100% Done (Merged)** |
 | **Member 2** | Client UI, SOC dashboard, multi-page application, interactive Chart.js telemetry | `feature/frontend` | **100% Done (Merged)** |
 | **Member 3** | PostgreSQL database setup, Prisma 7 schema & config, migrations, seed & verification, ER docs | `feature/database` | **100% Done (Merged)** |
 
@@ -36,7 +36,7 @@ An investigation support tool that allows a forensic analyst to inspect social m
 ### Day 1 (Nov 11)
 - **Frontend Prototype:** Member 2 implemented the Day 1 SOC investigation UI in `client/` using static data in `mock-data.js`.
 - **Backend Core:** Member 1 initialized `server/` with Express 5, CORS, and dotenv.
-- **Risk Engine:** Implemented a deterministic 10-rule risk scoring engine (`src/services/riskEngine.js`) with 21 unit tests.
+- **Risk Engine:** Implemented a deterministic 10-rule risk scoring engine (`src/services/riskEngine.js`).
 - **REST Endpoints:** Created controllers and routes for profiles, analyses, dashboard formatted output, and stats.
 - **In-Memory Store:** Built an in-memory database mock (`src/lib/inMemoryStore.js`) mirroring Prisma's API so the entire system works before PostgreSQL is provisioned.
 - **One-Shot Scan:** Implemented `POST /api/scan` for rapid profile analysis from the dashboard quick scan bar.
@@ -44,7 +44,6 @@ An investigation support tool that allows a forensic analyst to inspect social m
 ### Day 2 & 3 (Nov 12–13)
 - **PR & History Management:** Cleaned up git history so `main` remains pristine at the Day 1 baseline while `feature/backend` holds granular, authentic commits.
 - **Database Adapter Upgrade (`src/lib/prisma.js`):** Engineered automatic database detection. The server now checks for `DATABASE_URL` in `.env` — if present and `@prisma/client` is installed, it connects to PostgreSQL; otherwise, it seamlessly uses the in-memory store.
-- **Integration Test Suite (`tests/api.test.js`):** Added 14 controller integration tests covering profile CRUD, analysis flows, 404 handling, and quick scans. Total test suite is **35 / 35 tests passing (100% green)**.
 - **Documentation & Prisma Specification:** Documented ready-to-use Prisma models for Member 3.
 
 ### Day 4 & 5 (Nov 13–15) — Member 3 Database Integration & System Unification
@@ -56,7 +55,6 @@ An investigation support tool that allows a forensic analyst to inspect social m
 - **Full-Stack Live Connection:** Connected multi-page frontend (`client/js/api.js`) directly to live backend REST API with automatic fallback to client mock store if offline.
 - **Audit History & Filter Optimization:** Fixed case-sensitivity bug in `history.js` and `reports.js`, ensuring all historical records display on landing.
 - **Lifecycle & Health Heartbeat:** Added graceful Prisma disconnection handling on SIGINT/SIGTERM, and extended `/health` endpoint to query PostgreSQL and measure query latency.
-- **Test Suite Expansion:** Expanded test suite with controller integration tests for the report endpoint and Prisma adapter tests. Test suite is **41 / 41 passing tests (100% green)**.
 - **Documentation & Diagrams:** Authored `server/docs/DATABASE.md` and overhauled `README.md` with complete Mermaid system architecture, sequence flows, and ER diagrams.
 
 ---
@@ -96,7 +94,7 @@ Fake-Profile-Analyser_/
 │
 └── server/                         ← BACKEND (Owned by Member 1)
     ├── BACKEND.md                  ← Detailed API specification & guide
-    ├── package.json                ← Express 5, Node >=20, npm test runner
+    ├── package.json                ← Express 5, Node >=20
     ├── .env.example                ← Template: PORT=3000, DATABASE_URL
     ├── prisma.config.js            ← Prisma 7 CLI & migration configuration
     ├── prisma/
@@ -129,9 +127,6 @@ Fake-Profile-Analyser_/
     │   │   └── inMemoryStore.js    ← Map-based in-memory store with Prisma-like API
     │   └── utils/
     │       └── formatters.js       ← Formats DB entities into dashboard UI shape & Crime Branch dossier
-    └── tests/
-        ├── riskEngine.test.js      ← 21 unit tests for risk scoring rules
-        └── api.test.js             ← 20 integration tests for controllers & report
 ```
 
 ---
@@ -288,16 +283,4 @@ module.exports = defineConfig({
    [FPDS] Database: Connected via Prisma Client (PostgreSQL)
    ```
 
----
 
-## 8. Verification & Test Suite
-
-All tests can be executed from the `server/` folder:
-```bash
-cd server
-npm test
-```
-**Expected Output:**
-- `tests/api.test.js`: 14 passing tests
-- `tests/riskEngine.test.js`: 21 passing tests
-- **Total: 35 passing tests, 0 failures.**

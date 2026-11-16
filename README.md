@@ -6,7 +6,6 @@ An enterprise-grade cybersecurity investigation interface and forensics intellig
 [![Express 5](https://img.shields.io/badge/Express-v5.0-000000?logo=express&logoColor=white)](https://expressjs.com/)
 [![Prisma ORM](https://img.shields.io/badge/Prisma-v7-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Tests](https://img.shields.io/badge/Tests-41%2F41%20Passing-success)](file:///Users/sehrawatritik2007mac.com/Downloads/asd_major_project/server/tests)
 
 ---
 
@@ -163,7 +162,7 @@ erDiagram
 | Layer | Technologies |
 |-------|--------------|
 | **Frontend UI** | HTML5 Semantic Architecture, Custom Cyber CSS3 Design System, Pure Vanilla JavaScript (ES6+), Lucide Icons |
-| **Backend API** | Node.js (v20+), Express 5, CORS, Dotenv, Built-in `node:test` Runner |
+| **Backend API** | Node.js (v20+), Express 5, CORS, Dotenv |
 | **ORM & Database** | Prisma ORM v7 (`@prisma/client`, `@prisma/adapter-pg`, `@prisma/config`), PostgreSQL 16+ |
 | **Architecture** | Deterministic Pure-Function Risk Scoring, Cascade Foreign Keys, Auto-Switching In-Memory Fallback |
 
@@ -229,10 +228,6 @@ Fake-Profile-Analyser_/
     │   │   └── inMemoryStore.js    # Zero-config development fallback store
     │   └── utils/
     │       └── formatters.js       # Transforms DB records to dashboard shape & Crime Branch dossier
-    └── tests/
-        ├── api.test.js             # Integration tests for REST endpoints & reports
-        ├── prisma.test.js          # Prisma ORM CRUD & cascade integration tests
-        └── riskEngine.test.js      # 21 unit tests for forensic risk engine
 ```
 
 ---
@@ -311,7 +306,6 @@ Inside `server/`:
 | `npm run db:reset` | Resets PostgreSQL schema and runs fresh migrations and seeds |
 | `npm run prisma:studio` | Launches visual Prisma Studio GUI on `http://localhost:5555` |
 | `npm run prisma:migrate` | Runs pending migrations in development |
-| `npm test` | Runs complete 41-test integration and unit test suite |
 
 ---
 

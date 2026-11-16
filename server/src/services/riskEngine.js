@@ -2,15 +2,8 @@
 
 /**
  * FPDS — Rule-Based Risk Scoring Engine
- * Member 1 | server/src/services/riskEngine.js
  *
- * This module is a PURE function — it has no Express, Prisma, or I/O imports.
- * It takes a profile data object and returns a deterministic risk assessment.
- *
- * DISCLAIMER (required by context.md):
- *   Risk scores are investigation leads only. They do NOT prove an account is
- *   fake, malicious, or involved in criminal activity. Each signal has
- *   legitimate explanations. Human review is mandatory before action.
+ * Computes deterministic risk assessment based on profile telemetry.
  *
  * Scoring categories:
  *   0  – 24  → LOW

@@ -2,8 +2,7 @@
 
 /**
  * FPDS — Response Formatters
- * Maps internal DB/engine data to the shapes dashboard.js expects.
- * Member 2 can consume these directly — no extra transformation needed.
+ * Maps internal DB and risk engine models to presentation and forensic dossier structures.
  */
 
 // ── Platform display names ────────────────────────────────────────────────────
