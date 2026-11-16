@@ -1,4 +1,5 @@
-🌐 **Live Website:** [Fake Profile Analyser]((https://fake-profile-analyser-client.vercel.app/))
+# 🔍 Fake Profile Analyser
+🌐 **Live Demo:** [https://fake-profile-analyser-client.vercel.app](https://fake-profile-analyser-client.vercel.app)
 # Fake Social Media Profile Detection and Reporting System (FPDS)
 
 An enterprise-grade cybersecurity investigation interface and forensics intelligence system developed for an Academic Software Development (ASD) Capstone Project.
